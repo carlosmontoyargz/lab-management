@@ -54,7 +54,6 @@ public class Solicitud
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(nullable = true)
     private BigDecimal costo;
 
     @ManyToOne(fetch = FetchType.LAZY)
