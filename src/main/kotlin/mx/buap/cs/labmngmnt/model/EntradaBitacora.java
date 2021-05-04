@@ -41,7 +41,7 @@ public class EntradaBitacora
     @Id
     @Column(name = "entrada_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entrada_generator")
-    @SequenceGenerator(name = "entrada_generator", sequenceName = "entrada_seq")
+    @SequenceGenerator(name = "entrada_generator", sequenceName = "entrada_seq", allocationSize = 1)
     private int id;
 
     private LocalDate fecha;

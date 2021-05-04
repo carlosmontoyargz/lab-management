@@ -36,7 +36,7 @@ public class Materia
     @Id
     @Column(name = "materia_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "materia_generator")
-    @SequenceGenerator(name = "materia_generator", sequenceName = "materia_seq")
+    @SequenceGenerator(name = "materia_generator", sequenceName = "materia_seq", allocationSize = 1)
     private int id;
 
     @Column(length = 20, nullable = false)

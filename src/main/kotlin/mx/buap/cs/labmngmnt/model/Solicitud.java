@@ -37,7 +37,7 @@ public class Solicitud
     @Id
     @Column(name = "solicitud_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "solicitud_generator")
-    @SequenceGenerator(name = "solicitud_generator", sequenceName = "solicitud_seq")
+    @SequenceGenerator(name = "solicitud_generator", sequenceName = "solicitud_seq", allocationSize = 1)
     private int id;
 
     @Column(unique = true)

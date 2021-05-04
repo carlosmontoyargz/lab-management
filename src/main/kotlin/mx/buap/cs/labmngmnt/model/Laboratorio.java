@@ -36,7 +36,7 @@ public class Laboratorio
     @Id
     @Column(name = "laboratorio_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "laboratorio_generator")
-    @SequenceGenerator(name = "laboratorio_generator", sequenceName = "laboratorio_seq")
+    @SequenceGenerator(name = "laboratorio_generator", sequenceName = "laboratorio_seq", allocationSize = 1)
     private int id;
 
     @Column(length = 50)
