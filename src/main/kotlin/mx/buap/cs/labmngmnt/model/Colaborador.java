@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package mx.buap.cs.labmngmnt.model;
 
 import com.vladmihalcea.hibernate.type.interval.PostgreSQLIntervalType;
@@ -41,84 +42,86 @@ import java.util.List;
  */
 @Entity
 @TypeDef(
-		typeClass = PostgreSQLIntervalType.class,
-		defaultForType = Duration.class
+        typeClass = PostgreSQLIntervalType.class,
+        defaultForType = Duration.class
 )
 public class Colaborador extends Usuario
 {
-	private String carrera;
-	private LocalDateTime inicioServicio;
-	private LocalDateTime conclusionServicio;
+    @Column(length = 60)
+    private String carrera;
 
-	@Column(columnDefinition = "interval")
-	private Duration tiempoPrestado;
+    private LocalDateTime inicioServicio;
+    private LocalDateTime conclusionServicio;
 
-	@Column(nullable = false)
-	private boolean responsable;
+    @Column(columnDefinition = "interval")
+    private Duration tiempoPrestado;
 
-	@OneToMany(
-			mappedBy = "colaborador",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true
-	)
-	private final List<Documento> documentos = new LinkedList<>();
+    @Column(nullable = false)
+    private boolean responsable;
 
-	public void agregarDocumento(Documento documento) {
-		documentos.add(documento);
-		documento.setColaborador(this);
-	}
+    @OneToMany(
+            mappedBy = "colaborador",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private final List<Documento> documentos = new LinkedList<>();
 
-	public void removerDocumento(Documento documento) {
-		documentos.remove(documento);
-		documento.setColaborador(null);
-	}
+    public void agregarDocumento(Documento documento) {
+        documentos.add(documento);
+        documento.setColaborador(this);
+    }
 
-	public Duration incrementarTiempoPrestado(Duration tiempo) {
-		tiempoPrestado = tiempoPrestado.plus(tiempo);
-		return tiempoPrestado;
-	}
+    public void removerDocumento(Documento documento) {
+        documentos.remove(documento);
+        documento.setColaborador(null);
+    }
 
-	public String getCarrera() {
-		return carrera;
-	}
+    public Duration incrementarTiempoPrestado(Duration tiempo) {
+        tiempoPrestado = tiempoPrestado.plus(tiempo);
+        return tiempoPrestado;
+    }
 
-	public void setCarrera(String carrera) {
-		this.carrera = carrera;
-	}
+    public String getCarrera() {
+        return carrera;
+    }
 
-	public LocalDateTime getInicioServicio() {
-		return inicioServicio;
-	}
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
+    }
 
-	public void setInicioServicio(LocalDateTime inicioServicio) {
-		this.inicioServicio = inicioServicio;
-	}
+    public LocalDateTime getInicioServicio() {
+        return inicioServicio;
+    }
 
-	public LocalDateTime getConclusionServicio() {
-		return conclusionServicio;
-	}
+    public void setInicioServicio(LocalDateTime inicioServicio) {
+        this.inicioServicio = inicioServicio;
+    }
 
-	public void setConclusionServicio(LocalDateTime conclusionServicio) {
-		this.conclusionServicio = conclusionServicio;
-	}
+    public LocalDateTime getConclusionServicio() {
+        return conclusionServicio;
+    }
 
-	public Duration getTiempoPrestado() {
-		return tiempoPrestado;
-	}
+    public void setConclusionServicio(LocalDateTime conclusionServicio) {
+        this.conclusionServicio = conclusionServicio;
+    }
 
-	public void setTiempoPrestado(Duration tiempoPrestado) {
-		this.tiempoPrestado = tiempoPrestado;
-	}
+    public Duration getTiempoPrestado() {
+        return tiempoPrestado;
+    }
 
-	public boolean isResponsable() {
-		return responsable;
-	}
+    public void setTiempoPrestado(Duration tiempoPrestado) {
+        this.tiempoPrestado = tiempoPrestado;
+    }
 
-	public void setResponsable(boolean responsable) {
-		this.responsable = responsable;
-	}
+    public boolean isResponsable() {
+        return responsable;
+    }
 
-	public List<Documento> getDocumentos() {
-		return documentos;
-	}
+    public void setResponsable(boolean responsable) {
+        this.responsable = responsable;
+    }
+
+    public List<Documento> getDocumentos() {
+        return documentos;
+    }
 }

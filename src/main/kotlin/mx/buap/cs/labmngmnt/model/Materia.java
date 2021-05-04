@@ -25,34 +25,25 @@
 package mx.buap.cs.labmngmnt.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * @author Carlos Montoya
  * @since 1.0
  */
 @Entity
-public class Documento
+public class Materia
 {
     @Id
-    @Column(name = "documento_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documento_generator")
-    @SequenceGenerator(name = "documento_generator", sequenceName = "documento_seq")
+    @Column(name = "materia_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "materia_generator")
+    @SequenceGenerator(name = "materia_generator", sequenceName = "materia_seq")
     private int id;
 
-    @Column(nullable = false)
+    @Column(length = 20, nullable = false)
+    private String clave;
+
+    @Column(length = 100, nullable = false)
     private String nombre;
-
-    @Lob
-    @Column(columnDefinition = "BYTEA")
-    private byte[] contenido;
-
-    @Column(nullable = false)
-    private LocalDateTime fechaCreacion;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colaborador_id")
-    private Colaborador colaborador;
 
     public int getId() {
         return id;
@@ -60,6 +51,14 @@ public class Documento
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     public String getNombre() {
@@ -70,38 +69,14 @@ public class Documento
         this.nombre = nombre;
     }
 
-    public byte[] getContenido() {
-        return contenido;
-    }
-
-    public void setContenido(byte[] contenido) {
-        this.contenido = contenido;
-    }
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Colaborador getColaborador() {
-        return colaborador;
-    }
-
-    public void setColaborador(Colaborador colaborador) {
-        this.colaborador = colaborador;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Documento)) return false;
+        if (!(o instanceof Materia)) return false;
 
-        Documento documento = (Documento) o;
+        Materia materia = (Materia) o;
 
-        return id == documento.id;
+        return id == materia.id;
     }
 
     @Override

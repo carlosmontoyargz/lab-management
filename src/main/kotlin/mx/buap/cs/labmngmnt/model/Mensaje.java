@@ -24,88 +24,76 @@
 
 package mx.buap.cs.labmngmnt.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * @author Carlos Montoya
- * @since 1.0
+ * @since
  */
 @Entity
-public class Documento
+public class Mensaje
 {
     @Id
-    @Column(name = "documento_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documento_generator")
-    @SequenceGenerator(name = "documento_generator", sequenceName = "documento_seq")
-    private int id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "mensaje_id", updatable = false, nullable = false)
+    private UUID id;
 
-    @Column(nullable = false)
-    private String nombre;
+    private String titulo;
 
-    @Lob
-    @Column(columnDefinition = "BYTEA")
-    private byte[] contenido;
+    @Column(columnDefinition = "TEXT")
+    private String contenido;
 
-    @Column(nullable = false)
-    private LocalDateTime fechaCreacion;
+    private LocalDateTime enviado;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colaborador_id")
-    private Colaborador colaborador;
+    @JoinColumn(name = "enviado_por")
+    private Usuario usuario;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public byte[] getContenido() {
+    public String getContenido() {
         return contenido;
     }
 
-    public void setContenido(byte[] contenido) {
+    public void setContenido(String contenido) {
         this.contenido = contenido;
     }
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
+    public LocalDateTime getEnviado() {
+        return enviado;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setEnviado(LocalDateTime enviado) {
+        this.enviado = enviado;
     }
 
-    public Colaborador getColaborador() {
-        return colaborador;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setColaborador(Colaborador colaborador) {
-        this.colaborador = colaborador;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Documento)) return false;
-
-        Documento documento = (Documento) o;
-
-        return id == documento.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

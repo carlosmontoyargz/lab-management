@@ -16,6 +16,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+    open-in-view: off
 server:
   port: 8080
 #jwt.secret: "StrawberryFieldsForever"

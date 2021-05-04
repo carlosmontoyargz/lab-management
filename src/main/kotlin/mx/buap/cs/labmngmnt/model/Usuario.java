@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package mx.buap.cs.labmngmnt.model;
 
 import javax.persistence.*;
@@ -34,125 +35,142 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario
 {
-	@Id
-	@GeneratedValue
-	@Column(name = "usuario_id")
-	private int id;
-	private String matricula;
-	private String correo;
-	private String password;
-	private String nombre;
-	private String apellidoPaterno;
-	private String apellidoMaterno;
-	private String telefono;
-	private LocalDateTime creado;
+    @Id
+    @Column(name = "usuario_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_generator")
+    @SequenceGenerator(name = "usuario_generator", sequenceName = "usuario_seq")
+    private int id;
 
-	@Column(nullable = false)
-	private boolean activo;
+    @Column(length = 20, nullable = false, unique = true)
+    private String matricula;
 
-	@Column(nullable = false)
-	private boolean confirmado;
+    @Column(length = 100, nullable = false, unique = true)
+    private String correo;
 
-	public int getId() {
-		return id;
-	}
+    @Column(length = 100, nullable = false)
+    private String password;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(length = 80, nullable = false)
+    private String nombre;
 
-	public String getMatricula() {
-		return matricula;
-	}
+    @Column(length = 80)
+    private String apellidoPaterno;
 
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
+    @Column(length = 80)
+    private String apellidoMaterno;
 
-	public String getCorreo() {
-		return correo;
-	}
+    @Column(length = 20)
+    private String telefono;
 
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
+    @Column(nullable = false)
+    private LocalDateTime creado;
 
-	public String getPassword() {
-		return password;
-	}
+    @Column(nullable = false)
+    private boolean activo;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @Column(nullable = false)
+    private boolean confirmado;
 
-	public String getNombre() {
-		return nombre;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getApellidoPaterno() {
-		return apellidoPaterno;
-	}
+    public String getMatricula() {
+        return matricula;
+    }
 
-	public void setApellidoPaterno(String apellidoPaterno) {
-		this.apellidoPaterno = apellidoPaterno;
-	}
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
 
-	public String getApellidoMaterno() {
-		return apellidoMaterno;
-	}
+    public String getCorreo() {
+        return correo;
+    }
 
-	public void setApellidoMaterno(String apellidoMaterno) {
-		this.apellidoMaterno = apellidoMaterno;
-	}
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 
-	public String getTelefono() {
-		return telefono;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public LocalDateTime getCreado() {
-		return creado;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setCreado(LocalDateTime creado) {
-		this.creado = creado;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public boolean isActivo() {
-		return activo;
-	}
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
 
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
 
-	public boolean isConfirmado() {
-		return confirmado;
-	}
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
 
-	public void setConfirmado(boolean confirmado) {
-		this.confirmado = confirmado;
-	}
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Usuario)) return false;
+    public String getTelefono() {
+        return telefono;
+    }
 
-		Usuario usuario = (Usuario) o;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
-		return id == usuario.id;
-	}
+    public LocalDateTime getCreado() {
+        return creado;
+    }
 
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
-	}
+    public void setCreado(LocalDateTime creado) {
+        this.creado = creado;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public boolean isConfirmado() {
+        return confirmado;
+    }
+
+    public void setConfirmado(boolean confirmado) {
+        this.confirmado = confirmado;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Usuario)) return false;
+
+        Usuario usuario = (Usuario) o;
+
+        return id == usuario.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

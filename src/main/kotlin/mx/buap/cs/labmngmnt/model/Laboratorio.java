@@ -25,34 +25,28 @@
 package mx.buap.cs.labmngmnt.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * @author Carlos Montoya
  * @since 1.0
  */
 @Entity
-public class Documento
+public class Laboratorio
 {
     @Id
-    @Column(name = "documento_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documento_generator")
-    @SequenceGenerator(name = "documento_generator", sequenceName = "documento_seq")
+    @Column(name = "laboratorio_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "laboratorio_generator")
+    @SequenceGenerator(name = "laboratorio_generator", sequenceName = "laboratorio_seq")
     private int id;
 
-    @Column(nullable = false)
+    @Column(length = 50)
     private String nombre;
 
-    @Lob
-    @Column(columnDefinition = "BYTEA")
-    private byte[] contenido;
+    @Column(length = 20)
+    private String edificio;
 
-    @Column(nullable = false)
-    private LocalDateTime fechaCreacion;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colaborador_id")
-    private Colaborador colaborador;
+    @Column(length = 20)
+    private String salon;
 
     public int getId() {
         return id;
@@ -70,38 +64,30 @@ public class Documento
         this.nombre = nombre;
     }
 
-    public byte[] getContenido() {
-        return contenido;
+    public String getEdificio() {
+        return edificio;
     }
 
-    public void setContenido(byte[] contenido) {
-        this.contenido = contenido;
+    public void setEdificio(String edificio) {
+        this.edificio = edificio;
     }
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
+    public String getSalon() {
+        return salon;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Colaborador getColaborador() {
-        return colaborador;
-    }
-
-    public void setColaborador(Colaborador colaborador) {
-        this.colaborador = colaborador;
+    public void setSalon(String salon) {
+        this.salon = salon;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Documento)) return false;
+        if (!(o instanceof Laboratorio)) return false;
 
-        Documento documento = (Documento) o;
+        Laboratorio that = (Laboratorio) o;
 
-        return id == documento.id;
+        return id == that.id;
     }
 
     @Override

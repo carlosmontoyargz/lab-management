@@ -25,83 +25,79 @@
 package mx.buap.cs.labmngmnt.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Carlos Montoya
  * @since 1.0
  */
 @Entity
-public class Documento
+public class Incidente
 {
-    @Id
-    @Column(name = "documento_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documento_generator")
-    @SequenceGenerator(name = "documento_generator", sequenceName = "documento_seq")
-    private int id;
-
-    @Column(nullable = false)
-    private String nombre;
-
-    @Lob
-    @Column(columnDefinition = "BYTEA")
-    private byte[] contenido;
-
-    @Column(nullable = false)
-    private LocalDateTime fechaCreacion;
+    @EmbeddedId
+    private InicidenteId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colaborador_id")
-    private Colaborador colaborador;
+    @JoinColumn(name = "entrada_id",insertable = false, updatable = false)
+    private EntradaBitacora entrada;
 
-    public int getId() {
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String descripcion;
+
+    @OneToMany(
+            mappedBy = "incidente",
+            cascade = CascadeType.ALL
+    )
+    private final List<Solicitud> solicitudes = new LinkedList<>();
+
+    public void agregarSolicitud(Solicitud solicitud) {
+        solicitudes.add(solicitud);
+        solicitud.setIncidente(this);
+    }
+
+    public void removerSolicitud(Solicitud solicitud) {
+        solicitudes.remove(solicitud);
+        solicitud.setIncidente(null);
+    }
+
+    public InicidenteId getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(InicidenteId id) {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public EntradaBitacora getEntrada() {
+        return entrada;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setEntrada(EntradaBitacora entrada) {
+        this.entrada = entrada;
     }
 
-    public byte[] getContenido() {
-        return contenido;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setContenido(byte[] contenido) {
-        this.contenido = contenido;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Colaborador getColaborador() {
-        return colaborador;
-    }
-
-    public void setColaborador(Colaborador colaborador) {
-        this.colaborador = colaborador;
+    public List<Solicitud> getSolicitudes() {
+        return solicitudes;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Documento)) return false;
+        if (!(o instanceof Incidente)) return false;
 
-        Documento documento = (Documento) o;
+        Incidente incidente = (Incidente) o;
 
-        return id == documento.id;
+        return Objects.equals(id, incidente.id);
     }
 
     @Override

@@ -21,14 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+package mx.buap.cs.labmngmnt.model;
 
-@SpringBootApplication
-class LabManagementApplication
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
+/**
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@Entity
+public class Profesor extends Usuario
+{
+    @Column(nullable = false)
+    private boolean responsable;
+
+    public boolean isResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(boolean responsable) {
+        this.responsable = responsable;
+    }
 }

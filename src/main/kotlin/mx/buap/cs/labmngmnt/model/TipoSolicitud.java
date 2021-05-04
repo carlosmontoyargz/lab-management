@@ -21,14 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+package mx.buap.cs.labmngmnt.model;
 
-@SpringBootApplication
-class LabManagementApplication
-
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
+/**
+ * @author Carlos Montoya
+ * @since
+ */
+public enum TipoSolicitud
+{
+    REPARACION, MANTENIMIENTO, INSTALACION_SOFTWARE, REEMPLAZO, OTRO
 }
