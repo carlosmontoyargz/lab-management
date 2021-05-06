@@ -17,6 +17,9 @@ spring:
           lob:
             non_contextual_creation: true
     open-in-view: off
+  data:
+    rest:
+      base-path: api
 server:
   port: 8080
-#jwt.secret: "StrawberryFieldsForever"
+jwt.secret: "StrawberryFieldsForever"

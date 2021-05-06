@@ -21,17 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import mx.buap.cs.labmngmnt.config.LabManagementProperties
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.runApplication
-
-@SpringBootApplication
-@EnableConfigurationProperties(LabManagementProperties::class)
-class LabManagementApplication
-
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
-}
+-- INSERT INTO usuario (usuario_id, activo, nombre, apellido_paterno, apellido_materno,  confirmado, correo, creado, matricula, password, telefono)
+-- VALUES (nextval(usuario_seq), true, 'Carlos', 'Montoya', 'Rodriguez', true, 'carlos.montoya@alumno.buap.mx', now(), '201325916', 'g4g5h45ht5t45', '2282190112')
+-- ;

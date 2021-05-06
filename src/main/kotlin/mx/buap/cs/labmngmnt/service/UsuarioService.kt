@@ -21,17 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import mx.buap.cs.labmngmnt.config.LabManagementProperties
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.runApplication
+package mx.buap.cs.labmngmnt.service
 
-@SpringBootApplication
-@EnableConfigurationProperties(LabManagementProperties::class)
-class LabManagementApplication
+import mx.buap.cs.labmngmnt.model.Usuario
+import java.util.*
 
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
+/**
+ *
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+interface UsuarioService
+{
+    fun registrar(usuario: Usuario): Usuario
+
+    fun obtenerUsuario(correo: String, password: String): Optional<Usuario>
 }

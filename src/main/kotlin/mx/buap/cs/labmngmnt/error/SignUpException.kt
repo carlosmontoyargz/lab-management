@@ -21,17 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import mx.buap.cs.labmngmnt.config.LabManagementProperties
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.runApplication
+package mx.buap.cs.labmngmnt.error
 
-@SpringBootApplication
-@EnableConfigurationProperties(LabManagementProperties::class)
-class LabManagementApplication
-
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
-}
+class SignUpException constructor(msg: String): Exception(msg)

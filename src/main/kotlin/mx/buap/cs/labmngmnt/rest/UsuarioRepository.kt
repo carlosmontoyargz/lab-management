@@ -21,17 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import mx.buap.cs.labmngmnt.config.LabManagementProperties
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.runApplication
+package mx.buap.cs.labmngmnt.rest
 
-@SpringBootApplication
-@EnableConfigurationProperties(LabManagementProperties::class)
-class LabManagementApplication
+import mx.buap.cs.labmngmnt.model.Usuario
+import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import java.util.*
 
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
+/**
+ *
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@RepositoryRestResource(collectionResourceRel = "usuarios", path = "usuarios")
+interface UsuarioRepository : PagingAndSortingRepository<Usuario, Int>
+{
+    fun findByCorreo(correo: String): Optional<Usuario>
+
+    fun existsByCorreo(correo: String): Boolean
 }

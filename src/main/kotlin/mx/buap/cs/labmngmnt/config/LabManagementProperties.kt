@@ -21,17 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import mx.buap.cs.labmngmnt.config.LabManagementProperties
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.runApplication
+package mx.buap.cs.labmngmnt.config
 
-@SpringBootApplication
-@EnableConfigurationProperties(LabManagementProperties::class)
-class LabManagementApplication
+import org.springframework.boot.context.properties.ConfigurationProperties
 
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
-}
+@ConfigurationProperties(prefix = "jwt")
+class LabManagementProperties(var secret: String = "")

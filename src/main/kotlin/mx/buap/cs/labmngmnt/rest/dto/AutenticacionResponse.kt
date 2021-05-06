@@ -21,17 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import mx.buap.cs.labmngmnt.config.LabManagementProperties
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.runApplication
+package mx.buap.cs.labmngmnt.rest.dto
 
-@SpringBootApplication
-@EnableConfigurationProperties(LabManagementProperties::class)
-class LabManagementApplication
-
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
+open class AutenticacionResponse(
+    var token: String?)
+{
+    companion object {
+        private const val serialVersionUID = -8091879091924046844L
+    }
 }

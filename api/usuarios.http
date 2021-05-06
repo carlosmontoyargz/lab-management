@@ -1,0 +1,17 @@
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+  "username": "carlos.montoya@alumno.buap.mx",
+  "password": "admin"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###
+
+GET localhost:8080/api/usuarios
+Authorization: Bearer {{auth_token}}
+
+###
+

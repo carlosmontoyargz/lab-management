@@ -21,17 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.buap.cs.labmngmnt
 
-import mx.buap.cs.labmngmnt.config.LabManagementProperties
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.runApplication
+package mx.buap.cs.labmngmnt.security
 
-@SpringBootApplication
-@EnableConfigurationProperties(LabManagementProperties::class)
-class LabManagementApplication
+import org.springframework.security.core.AuthenticationException
+import javax.servlet.http.HttpServletResponse
+import java.io.IOException
+import javax.servlet.http.HttpServletRequest
+import java.io.Serializable
+import org.springframework.security.web.AuthenticationEntryPoint
+import org.springframework.stereotype.Component
 
-fun main(args: Array<String>) {
-    runApplication<LabManagementApplication>(*args)
+/**
+ *
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@Component
+class JwtAuthenticationEntryPoint : AuthenticationEntryPoint, Serializable
+{
+    companion object {
+        private const val serialVersionUID = -7858869558953243875L
+    }
+
+    @Throws(IOException::class)
+    override fun commence(
+        request: HttpServletRequest?,
+        response: HttpServletResponse,
+        authException: AuthenticationException?
+    ) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+    }
 }
