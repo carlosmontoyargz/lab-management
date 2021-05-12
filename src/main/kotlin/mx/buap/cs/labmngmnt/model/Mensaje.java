@@ -32,7 +32,7 @@ import java.util.UUID;
 
 /**
  * @author Carlos Montoya
- * @since
+ * @since 1.0
  */
 @Entity
 public class Mensaje

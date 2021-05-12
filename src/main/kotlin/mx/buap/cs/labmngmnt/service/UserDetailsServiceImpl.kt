@@ -27,7 +27,7 @@ package mx.buap.cs.labmngmnt.service
 import mx.buap.cs.labmngmnt.model.Colaborador
 import mx.buap.cs.labmngmnt.model.Profesor
 import mx.buap.cs.labmngmnt.model.Usuario
-import mx.buap.cs.labmngmnt.rest.UsuarioRepository
+import mx.buap.cs.labmngmnt.repository.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Primary
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -47,7 +47,8 @@ import kotlin.jvm.Throws
 @Primary
 class UserDetailsServiceImpl
     @Autowired constructor(
-        val usuarioRepository: UsuarioRepository)
+        val usuarioRepository: UsuarioRepository
+    )
     : UserDetailsService
 {
     @Throws(UsernameNotFoundException::class)

@@ -22,11 +22,22 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest.dto
+package mx.buap.cs.labmngmnt.repository
 
-open class AutenticacionResponse(var token: String?)
+import mx.buap.cs.labmngmnt.model.Usuario
+import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import java.util.*
+
+/**
+ *
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@RepositoryRestResource(collectionResourceRel = "usuarios", path = "usuarios")
+interface UsuarioRepository : PagingAndSortingRepository<Usuario, Int>
 {
-    companion object {
-        private const val serialVersionUID = -8091879091924046844L
-    }
+    fun findByCorreo(correo: String): Optional<Usuario>
+
+    fun existsByCorreo(correo: String): Boolean
 }

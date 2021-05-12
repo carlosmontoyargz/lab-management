@@ -24,40 +24,17 @@
 
 package mx.buap.cs.labmngmnt.service
 
-import mx.buap.cs.labmngmnt.rest.UsuarioRepository
-import mx.buap.cs.labmngmnt.error.SignUpException
 import mx.buap.cs.labmngmnt.model.Usuario
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.jvm.Throws
 
 /**
  *
  * @author Carlos Montoya
  * @since 1.0
  */
-@Service
-class UsuarioServiceImpl
-    @Autowired constructor(
-        val usuarioRepository: UsuarioRepository,
-        val passwordEncoder: PasswordEncoder
-    )
-    : UsuarioService
+interface AuthenticationService
 {
-    @Throws(SignUpException::class)
-    override fun registrar(usuario: Usuario): Usuario {
-        if (usuarioRepository.existsByCorreo(usuario.correo!!))
-            throw SignUpException("El usuario ya existe")
+    fun registrar(usuario: Usuario): Usuario
 
-        usuario.password = passwordEncoder.encode(usuario.password!!)
-
-        return usuarioRepository.save(usuario)
-    }
-
-    override fun obtenerUsuario(correo: String, password: String): Optional<Usuario> =
-        usuarioRepository
-            .findByCorreo(correo)
-            .filter { u -> u.password.equals(password) }
+    fun obtenerUsuario(correo: String, password: String): Optional<Usuario>
 }

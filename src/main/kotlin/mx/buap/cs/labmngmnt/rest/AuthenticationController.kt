@@ -35,43 +35,37 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.security.authentication.BadCredentialsException
-
-import org.springframework.security.authentication.DisabledException
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import java.lang.Exception
+import org.springframework.security.core.AuthenticationException
 import kotlin.jvm.Throws
 
+/**
+ * Controlador REST para autenticación.
+ *
+ * @author Carlos Montoya
+ * @since 1.0
+ */
 @RestController
 @CrossOrigin
-class ControladorAutenticacion
+class AuthenticationController
     @Autowired constructor(
         val authenticationManager: AuthenticationManager,
         val jwtTokenUtil: JwtTokenUtil,
         val userDetailsService: UserDetailsService)
 {
-    @PostMapping(value = ["/autenticar"])
-    @Throws(Exception::class)
-    fun crearTokenAutenticacion(@RequestBody request: AutenticacionRequest)
-    : ResponseEntity<AutenticacionResponse>
+    @PostMapping("/autenticar")
+    @Throws(AuthenticationException::class)
+    fun crearTokenAutenticacion(@RequestBody request: AutenticacionRequest):
+            ResponseEntity<AutenticacionResponse>
     {
-        autenticar(request.username!!, request.password!!)
+        authenticationManager
+            .authenticate(UsernamePasswordAuthenticationToken(
+                request.username!!, request.password!!))
+
         return ResponseEntity.ok(
             AutenticacionResponse(
                 token = jwtTokenUtil.generateToken(
-                    userDetailsService.loadUserByUsername(request.username!!))))
-    }
-
-    @Throws(Exception::class)
-    private fun autenticar(username: String, password: String) {
-        try {
-            authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(username, password))
-        } catch (e: DisabledException) {
-            throw Exception("USER_DISABLED", e)
-        } catch (e: BadCredentialsException) {
-            throw Exception("INVALID_CREDENTIALS", e)
-        }
+                    userDetailsService.loadUserByUsername(request.username!!)))
+        )
     }
 }

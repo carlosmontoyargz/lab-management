@@ -24,9 +24,4 @@
 
 package mx.buap.cs.labmngmnt.rest.dto
 
-open class AutenticacionResponse(var token: String?)
-{
-    companion object {
-        private const val serialVersionUID = -8091879091924046844L
-    }
-}
+open class ErrorResponse(var mensaje: String?, var tipo: String?)

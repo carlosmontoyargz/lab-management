@@ -24,13 +24,15 @@
 
 package mx.buap.cs.labmngmnt
 
+import mx.buap.cs.labmngmnt.model.Colaborador
 import mx.buap.cs.labmngmnt.model.Profesor
-import mx.buap.cs.labmngmnt.service.UsuarioService
+import mx.buap.cs.labmngmnt.service.AuthenticationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.ApplicationListener
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 import java.time.LocalDateTime
 
 /**
@@ -41,23 +43,40 @@ import java.time.LocalDateTime
 @Component
 class DataLoader
     @Autowired constructor(
-        val usuarioService: UsuarioService)
+        val authenticationService: AuthenticationService)
     : ApplicationListener<ApplicationReadyEvent>
 {
     @Transactional
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        usuarioService.registrar(Profesor().apply {
+        authenticationService.registrar(Profesor().apply {
             nombre = "Carlos"
             apellidoPaterno = "Montoya"
             apellidoMaterno = "Rodriguez"
             matricula = "201325916"
-            correo = "carlos.montoya@alumno.buap.mx"
+            correo = "carlos.montoya@profesor.buap.mx"
             password = "admin"
             creado = LocalDateTime.now()
             telefono = "2125295121"
             isActivo = true
             isResponsable = true
             isConfirmado = true
+        })
+        authenticationService.registrar(Colaborador().apply {
+            nombre = "Juan"
+            apellidoPaterno = "López"
+            apellidoMaterno = "Gómez"
+            matricula = "201456145"
+            correo = "juan.lopez@alumno.buap.mx"
+            password = "user"
+            creado = LocalDateTime.now()
+            telefono = "3324697114"
+            isActivo = true
+            isResponsable = true
+            isConfirmado = true
+            carrera = "ICC"
+            inicioServicio = LocalDateTime.now().minusMonths(4)
+            conclusionServicio = LocalDateTime.now()
+            tiempoPrestado = Duration.ZERO
         })
     }
 }

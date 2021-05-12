@@ -24,20 +24,27 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.model.Usuario
-import org.springframework.data.repository.PagingAndSortingRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
-import java.util.*
+import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
+import org.springframework.http.HttpStatus
+import org.springframework.security.core.AuthenticationException
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.ResponseStatus
 
 /**
  *
  * @author Carlos Montoya
  * @since 1.0
  */
-@RepositoryRestResource(collectionResourceRel = "usuarios", path = "usuarios")
-interface UsuarioRepository : PagingAndSortingRepository<Usuario, Int>
+@ControllerAdvice
+class AuthenticationFailedAdvice
 {
-    fun findByCorreo(correo: String): Optional<Usuario>
-
-    fun existsByCorreo(correo: String): Boolean
+    @ResponseBody
+    @ExceptionHandler(AuthenticationException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun authenticationFailedHandler(ex: Exception): ErrorResponse =
+        ErrorResponse(
+            mensaje = ex.message,
+            tipo = ex.javaClass.simpleName)
 }
