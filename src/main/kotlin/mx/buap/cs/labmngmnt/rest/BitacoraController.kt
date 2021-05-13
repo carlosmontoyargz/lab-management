@@ -22,23 +22,13 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.repository
+package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.model.Usuario
-import org.springframework.data.repository.CrudRepository
+import mx.buap.cs.labmngmnt.model.EntradaBitacora
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
-import java.util.*
 
-/**
- *
- * @author Carlos Montoya
- * @since 1.0
- */
-@RepositoryRestResource(exported = false)
-interface UsuarioRepository : CrudRepository<Usuario, Int>
+@RepositoryRestResource
+interface BitacoraController : PagingAndSortingRepository<EntradaBitacora, Int>
 {
-    fun findByCorreo(correo: String): Optional<Usuario>
-
-    fun existsByCorreo(correo: String): Boolean
 }

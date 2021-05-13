@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "username": "carlos.montoya@profesor.buap.mx",
-  "password": "admin1"
+  "password": "admin"
 }
 
 > {% client.global.set("auth_token", response.body.token); %}
@@ -15,3 +15,10 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
+GET http://localhost:8080/api/usuarios/search/findAllByActivoTrue
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET http://localhost:8080/api
+Authorization: Bearer {{auth_token}}

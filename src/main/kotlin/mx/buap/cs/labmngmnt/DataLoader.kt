@@ -25,7 +25,9 @@
 package mx.buap.cs.labmngmnt
 
 import mx.buap.cs.labmngmnt.model.Colaborador
+import mx.buap.cs.labmngmnt.model.Materia
 import mx.buap.cs.labmngmnt.model.Profesor
+import mx.buap.cs.labmngmnt.repository.MateriaRepository
 import mx.buap.cs.labmngmnt.service.AuthenticationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -43,7 +45,9 @@ import java.time.LocalDateTime
 @Component
 class DataLoader
     @Autowired constructor(
-        val authenticationService: AuthenticationService)
+        val authenticationService: AuthenticationService,
+        val materiaRepository: MateriaRepository
+    )
     : ApplicationListener<ApplicationReadyEvent>
 {
     @Transactional
@@ -77,6 +81,11 @@ class DataLoader
             inicioServicio = LocalDateTime.now().minusMonths(4)
             conclusionServicio = LocalDateTime.now()
             tiempoPrestado = Duration.ZERO
+        })
+
+        materiaRepository.save(Materia().apply {
+            clave = "ICC002"
+            nombre = "Bases de Datos"
         })
     }
 }

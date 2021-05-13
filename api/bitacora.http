@@ -1,0 +1,40 @@
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+  "username": "carlos.montoya@profesor.buap.mx",
+  "password": "admin"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###
+
+GET localhost:8080/api/materias
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET localhost:8080/api/materias/1
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET localhost:8080/api/materias/search
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET localhost:8080/api/materias/search/findByClave?clave=ICC002
+Authorization: Bearer {{auth_token}}
+
+###
+
+POST localhost:8080/api/materias
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "clave": "MD0012",
+  "nombre": "Mineria de Datos"
+}
