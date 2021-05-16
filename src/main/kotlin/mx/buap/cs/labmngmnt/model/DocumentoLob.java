@@ -25,30 +25,24 @@
 package mx.buap.cs.labmngmnt.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * @author Carlos Montoya
  * @since 1.0
  */
 @Entity
-public class Documento
+public class DocumentoLob
 {
     @Id
-    @Column(name = "documento_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documento_generator")
-    @SequenceGenerator(name = "documento_generator", sequenceName = "documento_seq", allocationSize = 1)
     private int id;
 
-    @Column(nullable = false)
-    private String nombre;
+    @OneToOne
+    @MapsId
+    private Documento documento;
 
-    @Column(nullable = false)
-    private LocalDateTime fechaCreacion;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colaborador_id")
-    private Colaborador colaborador;
+    @Lob
+    @Column(columnDefinition = "BYTEA")
+    private byte[] contenido;
 
     public int getId() {
         return id;
@@ -58,42 +52,19 @@ public class Documento
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Documento getDocumento() {
+        return documento;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
     }
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
+    public byte[] getContenido() {
+        return contenido;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Colaborador getColaborador() {
-        return colaborador;
-    }
-
-    public void setColaborador(Colaborador colaborador) {
-        this.colaborador = colaborador;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Documento)) return false;
-
-        Documento documento = (Documento) o;
-
-        return id == documento.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public void setContenido(byte[] contenido) {
+        this.contenido = contenido;
     }
 }
