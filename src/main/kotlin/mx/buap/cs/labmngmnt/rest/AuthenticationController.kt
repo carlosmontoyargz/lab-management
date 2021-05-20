@@ -37,11 +37,10 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.AuthenticationException
-import java.util.stream.Collectors
 import kotlin.jvm.Throws
 
 /**
- * Controlador REST para autenticación.
+ * Controlador web para autenticación.
  *
  * @author Carlos Montoya
  * @since 1.0
@@ -56,7 +55,8 @@ class AuthenticationController
 {
     @PostMapping("/autenticar")
     @Throws(AuthenticationException::class)
-    fun crearTokenAutenticacion(@RequestBody request: AutenticacionRequest):
+    fun crearTokenAutenticacion(
+        @RequestBody request: AutenticacionRequest):
             ResponseEntity<AutenticacionResponse>
     {
         authenticationManager
