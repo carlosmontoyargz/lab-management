@@ -25,8 +25,8 @@
 package mx.buap.cs.labmngmnt.repository
 
 import mx.buap.cs.labmngmnt.model.Usuario
-import org.springframework.data.repository.CrudRepository
-import org.springframework.data.repository.PagingAndSortingRepository
+import mx.buap.cs.labmngmnt.rest.dto.UsuarioDto
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 import java.util.*
 
@@ -36,9 +36,11 @@ import java.util.*
  * @since 1.0
  */
 @RepositoryRestResource(exported = false)
-interface UsuarioRepository : CrudRepository<Usuario, Int>
+interface UsuarioRepository : JpaRepository<Usuario, Int>
 {
     fun findByCorreo(correo: String): Optional<Usuario>
 
     fun existsByCorreo(correo: String): Boolean
+
+    fun findAllBy(): List<UsuarioDto>
 }

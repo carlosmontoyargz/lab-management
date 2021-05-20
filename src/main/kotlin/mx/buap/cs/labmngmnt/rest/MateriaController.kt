@@ -29,7 +29,7 @@ import mx.buap.cs.labmngmnt.rest.dto.MateriaView
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(excerptProjection = MateriaView::class)
+@RepositoryRestResource
 interface MateriaController : CrudRepository<Materia, Int>
 {
     fun findByClave(clave: String): MateriaView?

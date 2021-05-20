@@ -24,27 +24,31 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
-import org.springframework.http.HttpStatus
-import org.springframework.security.core.AuthenticationException
-import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import mx.buap.cs.labmngmnt.error.UserNotFoundException
+import mx.buap.cs.labmngmnt.model.Usuario
+import mx.buap.cs.labmngmnt.repository.UsuarioRepository
+import mx.buap.cs.labmngmnt.rest.dto.UsuarioDto
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.rest.webmvc.RepositoryRestController
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
-/**
- *
- * @author Carlos Montoya
- * @since 1.0
- */
-@ControllerAdvice
-class AuthenticationFailedAdvice
+@RestController
+class UsuarioController
+    @Autowired constructor(
+        val usuarioRepository: UsuarioRepository)
 {
-    @ResponseBody
-    @ExceptionHandler(AuthenticationException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun authenticationFailedHandler(ex: AuthenticationException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
+    @GetMapping("/usuarios")
+    fun all(): List<UsuarioDto> {
+        return usuarioRepository.findAllBy()
+    }
+
+    @GetMapping("/usuarios/{id}")
+    fun one(@PathVariable id: Int): Usuario {
+        return usuarioRepository
+            .findById(id)
+            .orElseThrow { UserNotFoundException(id) }
+    }
 }

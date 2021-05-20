@@ -22,19 +22,25 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.service
-
-import mx.buap.cs.labmngmnt.model.Usuario
-import java.util.*
+package mx.buap.cs.labmngmnt.rest.dto;
 
 /**
- *
  * @author Carlos Montoya
  * @since 1.0
  */
-interface AuthenticationService
+public class UsuarioDto
 {
-    fun registrar(usuario: Usuario): Usuario
+    private String nombre;
 
-    fun obtenerUsuario(correo: String, password: String): Optional<Usuario>
+    public UsuarioDto(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 }

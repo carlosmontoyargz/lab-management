@@ -24,27 +24,12 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
-import org.springframework.http.HttpStatus
-import org.springframework.security.core.AuthenticationException
-import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import mx.buap.cs.labmngmnt.model.Colaborador
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-/**
- *
- * @author Carlos Montoya
- * @since 1.0
- */
-@ControllerAdvice
-class AuthenticationFailedAdvice
+@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
+interface ColaboradorController: JpaRepository<Colaborador, Int>
 {
-    @ResponseBody
-    @ExceptionHandler(AuthenticationException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun authenticationFailedHandler(ex: AuthenticationException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
+    fun findAllBy(): Colaborador
 }

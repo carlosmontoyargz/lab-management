@@ -24,13 +24,7 @@
 
 package mx.buap.cs.labmngmnt.model;
 
-import com.vladmihalcea.hibernate.type.interval.PostgreSQLIntervalType;
-import org.hibernate.annotations.TypeDef;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -41,10 +35,7 @@ import java.util.List;
  * @since 1.0
  */
 @Entity
-@TypeDef(
-        typeClass = PostgreSQLIntervalType.class,
-        defaultForType = Duration.class
-)
+@PrimaryKeyJoinColumn(name = "colaborador_id")
 public class Colaborador extends Usuario
 {
     @Column(length = 60)
@@ -53,8 +44,9 @@ public class Colaborador extends Usuario
     private LocalDateTime inicioServicio;
     private LocalDateTime conclusionServicio;
 
-    @Column(columnDefinition = "interval")
-    private Duration tiempoPrestado;
+    @OneToOne(mappedBy = "colaborador", cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER, optional = false)
+    private TiempoPrestado tiempoPrestado;
 
     @Column(nullable = false)
     private boolean responsable;
@@ -62,8 +54,7 @@ public class Colaborador extends Usuario
     @OneToMany(
             mappedBy = "colaborador",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+            orphanRemoval = true)
     private final List<Documento> documentos = new LinkedList<>();
 
     public void agregarDocumento(Documento documento) {
@@ -76,8 +67,23 @@ public class Colaborador extends Usuario
         documento.setColaborador(null);
     }
 
-    public Duration incrementarTiempoPrestado(Duration tiempo) {
-        tiempoPrestado = tiempoPrestado.plus(tiempo);
+    public void incrementarTiempoPrestado(Duration tiempo) {
+        tiempoPrestado.incrementar(tiempo);
+    }
+
+    public void setTiempoPrestado(TiempoPrestado tiempoPrestado) {
+        if (tiempoPrestado == null) {
+            if (this.tiempoPrestado != null) {
+                this.tiempoPrestado.setColaborador(null);
+            }
+        }
+        else {
+            tiempoPrestado.setColaborador(this);
+        }
+        this.tiempoPrestado = tiempoPrestado;
+    }
+
+    public TiempoPrestado getTiempoPrestado() {
         return tiempoPrestado;
     }
 
@@ -103,14 +109,6 @@ public class Colaborador extends Usuario
 
     public void setConclusionServicio(LocalDateTime conclusionServicio) {
         this.conclusionServicio = conclusionServicio;
-    }
-
-    public Duration getTiempoPrestado() {
-        return tiempoPrestado;
-    }
-
-    public void setTiempoPrestado(Duration tiempoPrestado) {
-        this.tiempoPrestado = tiempoPrestado;
     }
 
     public boolean isResponsable() {

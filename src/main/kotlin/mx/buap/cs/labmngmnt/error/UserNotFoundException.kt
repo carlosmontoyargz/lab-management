@@ -22,29 +22,9 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.error
 
-import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
-import org.springframework.http.HttpStatus
-import org.springframework.security.core.AuthenticationException
-import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import java.lang.RuntimeException
 
-/**
- *
- * @author Carlos Montoya
- * @since 1.0
- */
-@ControllerAdvice
-class AuthenticationFailedAdvice
-{
-    @ResponseBody
-    @ExceptionHandler(AuthenticationException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun authenticationFailedHandler(ex: AuthenticationException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
-}
+class UserNotFoundException(id: Int):
+    RuntimeException("No se encontró usuario $id")

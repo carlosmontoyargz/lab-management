@@ -22,29 +22,36 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.service
 
-import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
-import org.springframework.http.HttpStatus
-import org.springframework.security.core.AuthenticationException
-import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import mx.buap.cs.labmngmnt.repository.UsuarioRepository
+import mx.buap.cs.labmngmnt.error.SignUpException
+import mx.buap.cs.labmngmnt.model.Usuario
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Service
+import java.util.*
+import kotlin.jvm.Throws
 
 /**
  *
  * @author Carlos Montoya
  * @since 1.0
  */
-@ControllerAdvice
-class AuthenticationFailedAdvice
+@Service
+class UsuarioServiceImpl
+    @Autowired constructor(
+        val usuarioRepository: UsuarioRepository,
+        val passwordEncoder: PasswordEncoder)
+    : UsuarioService
 {
-    @ResponseBody
-    @ExceptionHandler(AuthenticationException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun authenticationFailedHandler(ex: AuthenticationException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
+    @Throws(SignUpException::class)
+    override fun registrar(usuario: Usuario): Usuario {
+        if (usuarioRepository.existsByCorreo(usuario.correo!!))
+            throw SignUpException("El usuario ya existe")
+
+        usuario.password = passwordEncoder.encode(usuario.password!!)
+
+        return usuarioRepository.save(usuario)
+    }
 }

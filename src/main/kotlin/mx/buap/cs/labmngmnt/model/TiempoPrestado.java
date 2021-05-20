@@ -22,29 +22,59 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.model;
 
-import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
-import org.springframework.http.HttpStatus
-import org.springframework.security.core.AuthenticationException
-import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import javax.persistence.*;
+import java.time.Duration;
 
 /**
- *
  * @author Carlos Montoya
  * @since 1.0
  */
-@ControllerAdvice
-class AuthenticationFailedAdvice
+@Entity
+public class TiempoPrestado
 {
-    @ResponseBody
-    @ExceptionHandler(AuthenticationException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun authenticationFailedHandler(ex: AuthenticationException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
+    @Id
+    private int id;
+
+    @OneToOne
+    @JoinColumn(name = "colaborador_id")
+    @MapsId
+    private Colaborador colaborador;
+
+    private int horas = 0;
+    private int minutos = 0;
+
+    public void incrementar(Duration tiempo) {
+        horas += tiempo.toHours();
+        minutos += tiempo.toMinutesPart();
+    }
+
+    public Duration toDuration() {
+        return Duration.ofHours(horas).plusMinutes(minutos);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Colaborador getColaborador() {
+        return colaborador;
+    }
+
+    public void setColaborador(Colaborador colaborador) {
+        this.colaborador = colaborador;
+    }
+
+    public int getHoras() {
+        return horas;
+    }
+
+    public int getMinutos() {
+        return minutos;
+    }
 }

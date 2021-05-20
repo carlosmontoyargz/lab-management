@@ -24,11 +24,10 @@
 
 package mx.buap.cs.labmngmnt
 
-import mx.buap.cs.labmngmnt.model.Colaborador
-import mx.buap.cs.labmngmnt.model.Materia
-import mx.buap.cs.labmngmnt.model.Profesor
+import mx.buap.cs.labmngmnt.model.*
+import mx.buap.cs.labmngmnt.repository.DocumentoRepository
 import mx.buap.cs.labmngmnt.repository.MateriaRepository
-import mx.buap.cs.labmngmnt.service.AuthenticationService
+import mx.buap.cs.labmngmnt.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.ApplicationListener
@@ -45,14 +44,15 @@ import java.time.LocalDateTime
 @Component
 class DataLoader
     @Autowired constructor(
-        val authenticationService: AuthenticationService,
-        val materiaRepository: MateriaRepository
+        val usuarioService: UsuarioService,
+        val materiaRepository: MateriaRepository,
+        val documentoRepository: DocumentoRepository
     )
     : ApplicationListener<ApplicationReadyEvent>
 {
     @Transactional
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        authenticationService.registrar(Profesor().apply {
+        usuarioService.registrar(Profesor().apply {
             nombre = "Carlos"
             apellidoPaterno = "Montoya"
             apellidoMaterno = "Rodriguez"
@@ -65,10 +65,10 @@ class DataLoader
             isResponsable = true
             isConfirmado = true
         })
-        authenticationService.registrar(Colaborador().apply {
+        val colaborador = usuarioService.registrar(Colaborador().apply {
             nombre = "Juan"
-            apellidoPaterno = "López"
-            apellidoMaterno = "Gómez"
+            apellidoPaterno = "Lopez"
+            apellidoMaterno = "Gomez"
             matricula = "201456145"
             correo = "juan.lopez@alumno.buap.mx"
             password = "user"
@@ -80,7 +80,15 @@ class DataLoader
             carrera = "ICC"
             inicioServicio = LocalDateTime.now().minusMonths(4)
             conclusionServicio = LocalDateTime.now()
-            tiempoPrestado = Duration.ZERO
+            tiempoPrestado = TiempoPrestado().apply {
+                incrementar(Duration.ofHours(122).plusMinutes(43))
+            }
+        })
+
+        documentoRepository.save(Documento().apply {
+            nombre = "Carta de Aceptacion"
+            fechaCreacion = LocalDateTime.now()
+            this.colaborador = colaborador as Colaborador?
         })
 
         materiaRepository.save(Materia().apply {

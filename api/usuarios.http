@@ -13,12 +13,20 @@ Content-Type: application/json
 GET localhost:8080/api/usuarios
 Authorization: Bearer {{auth_token}}
 
+
 ###
 
-GET http://localhost:8080/api/usuarios/search/findAllByActivoTrue
+GET localhost:8080/api/colaboradores/
 Authorization: Bearer {{auth_token}}
 
+
 ###
 
-GET http://localhost:8080/api
+GET localhost:8080/api/colaboradores/2
+Authorization: Bearer {{auth_token}}
+
+
+###
+
+GET http://localhost:8080/api/documentos
 Authorization: Bearer {{auth_token}}
