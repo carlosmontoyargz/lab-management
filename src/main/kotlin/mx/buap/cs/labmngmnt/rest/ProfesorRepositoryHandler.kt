@@ -24,11 +24,20 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.model.Documento
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import mx.buap.cs.labmngmnt.model.Profesor
+import mx.buap.cs.labmngmnt.service.UsuarioService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.rest.core.annotation.HandleBeforeCreate
+import org.springframework.data.rest.core.annotation.RepositoryEventHandler
+import org.springframework.stereotype.Component
 
-@RepositoryRestResource(path = "documentos", collectionResourceRel = "documentos")
-interface DocumentoController: JpaRepository<Documento, Int>
+@Component
+@RepositoryEventHandler(Profesor::class)
+class ProfesorRepositoryHandler
+    @Autowired constructor(val usuarioService: UsuarioService)
 {
+    @HandleBeforeCreate
+    fun handleBeforeCreate(profesor: Profesor) {
+        usuarioService.preregistrar(profesor)
+    }
 }

@@ -62,7 +62,7 @@ public class Usuario
     @Column(length = 20)
     private String telefono;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime creado;
 
     @Column(nullable = false)

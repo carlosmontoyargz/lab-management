@@ -24,31 +24,12 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.error.SignUpException
-import mx.buap.cs.labmngmnt.error.UserNotFoundException
-import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import mx.buap.cs.labmngmnt.model.Colaborador
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@ControllerAdvice
-class UserNotFoundAdvice
+@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
+interface ColaboradorRestRepository: JpaRepository<Colaborador, Int>
 {
-    @ResponseBody
-    @ExceptionHandler(UserNotFoundException::class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun employeeNotFoundHandler(ex: UserNotFoundException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
-
-    @ResponseBody
-    @ExceptionHandler(SignUpException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun signUpHandler(ex: SignUpException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
+    fun findAllBy(): Colaborador
 }

@@ -24,13 +24,11 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.model.Materia
-import mx.buap.cs.labmngmnt.rest.dto.MateriaView
-import org.springframework.data.repository.CrudRepository
+import mx.buap.cs.labmngmnt.model.EntradaBitacora
+import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @RepositoryRestResource
-interface MateriaController : CrudRepository<Materia, Int>
+interface BitacoraRestRepository : PagingAndSortingRepository<EntradaBitacora, Int>
 {
-    fun findByClave(clave: String): MateriaView?
 }

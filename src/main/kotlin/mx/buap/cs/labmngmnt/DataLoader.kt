@@ -27,6 +27,7 @@ package mx.buap.cs.labmngmnt
 import mx.buap.cs.labmngmnt.model.*
 import mx.buap.cs.labmngmnt.repository.DocumentoRepository
 import mx.buap.cs.labmngmnt.repository.MateriaRepository
+import mx.buap.cs.labmngmnt.repository.UsuarioRepository
 import mx.buap.cs.labmngmnt.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -45,6 +46,7 @@ import java.time.LocalDateTime
 class DataLoader
     @Autowired constructor(
         val usuarioService: UsuarioService,
+        val usuarioRepository: UsuarioRepository,
         val materiaRepository: MateriaRepository,
         val documentoRepository: DocumentoRepository
     )
@@ -52,38 +54,40 @@ class DataLoader
 {
     @Transactional
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        usuarioService.registrar(Profesor().apply {
-            nombre = "Carlos"
-            apellidoPaterno = "Montoya"
-            apellidoMaterno = "Rodriguez"
-            matricula = "201325916"
-            correo = "carlos.montoya@profesor.buap.mx"
-            password = "admin"
-            creado = LocalDateTime.now()
-            telefono = "2125295121"
-            isActivo = true
-            isResponsable = true
-            isConfirmado = true
-        })
-        val colaborador = usuarioService.registrar(Colaborador().apply {
-            nombre = "Juan"
-            apellidoPaterno = "Lopez"
-            apellidoMaterno = "Gomez"
-            matricula = "201456145"
-            correo = "juan.lopez@alumno.buap.mx"
-            password = "user"
-            creado = LocalDateTime.now()
-            telefono = "3324697114"
-            isActivo = true
-            isResponsable = true
-            isConfirmado = true
-            carrera = "ICC"
-            inicioServicio = LocalDateTime.now().minusMonths(4)
-            conclusionServicio = LocalDateTime.now()
-            tiempoPrestado = TiempoPrestado().apply {
-                incrementar(Duration.ofHours(122).plusMinutes(43))
-            }
-        })
+        usuarioRepository.save(
+            usuarioService.preregistrar(Profesor().apply {
+                nombre = "Carlos"
+                apellidoPaterno = "Montoya"
+                apellidoMaterno = "Rodriguez"
+                matricula = "201325916"
+                correo = "carlos.montoya@profesor.buap.mx"
+                password = "admin"
+                creado = LocalDateTime.now()
+                telefono = "2125295121"
+                isActivo = true
+                isResponsable = true
+                isConfirmado = true
+            }))
+        val colaborador = usuarioRepository.save(
+            usuarioService.preregistrar(Colaborador().apply {
+                nombre = "Juan"
+                apellidoPaterno = "Lopez"
+                apellidoMaterno = "Gomez"
+                matricula = "201456145"
+                correo = "juan.lopez@alumno.buap.mx"
+                password = "user"
+                creado = LocalDateTime.now()
+                telefono = "3324697114"
+                isActivo = true
+                isResponsable = true
+                isConfirmado = true
+                carrera = "ICC"
+                inicioServicio = LocalDateTime.now().minusMonths(4)
+                conclusionServicio = LocalDateTime.now()
+                tiempoPrestado = TiempoPrestado().apply {
+                    incrementar(Duration.ofHours(122).plusMinutes(43))
+                }
+            }))
 
         documentoRepository.save(Documento().apply {
             nombre = "Carta de Aceptacion"

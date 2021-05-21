@@ -28,5 +28,30 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
-GET http://localhost:8080/api/documentos
+GET localhost:8080/api/documentos
 Authorization: Bearer {{auth_token}}
+
+
+### Profesores
+
+GET localhost:8080/api/profesores
+Authorization: Bearer {{auth_token}}
+
+###
+
+POST http://localhost:8080/api/profesores
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "correo": "luis.perez@profesor.buap.mx",
+  "password": "luis.perez",
+  "responsable": true,
+  "nombre": "Luis",
+  "apellidoPaterno": "Perez",
+  "apellidoMaterno": "Gomez",
+  "matricula": "201135410",
+  "telefono": "21244495121",
+  "activo": true,
+  "creado": "2021-05-19T23:30:20.839686"
+}

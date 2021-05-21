@@ -26,12 +26,14 @@ package mx.buap.cs.labmngmnt.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 /**
  * @author Carlos Montoya
  * @since 1.0
  */
 @Entity
+@PrimaryKeyJoinColumn(name = "profesor_id")
 public class Profesor extends Usuario
 {
     @Column(nullable = false)

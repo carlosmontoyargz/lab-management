@@ -24,12 +24,11 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.model.Colaborador
+import mx.buap.cs.labmngmnt.model.Documento
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
-interface ColaboradorController: JpaRepository<Colaborador, Int>
+@RepositoryRestResource(path = "documentos", collectionResourceRel = "documentos")
+interface DocumentoRestRepository: JpaRepository<Documento, Int>
 {
-    fun findAllBy(): Colaborador
 }

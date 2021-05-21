@@ -46,12 +46,12 @@ class UsuarioServiceImpl
     : UsuarioService
 {
     @Throws(SignUpException::class)
-    override fun registrar(usuario: Usuario): Usuario {
+    override fun preregistrar(usuario: Usuario): Usuario {
         if (usuarioRepository.existsByCorreo(usuario.correo!!))
             throw SignUpException("El usuario ya existe")
 
-        usuario.password = passwordEncoder.encode(usuario.password!!)
-
-        return usuarioRepository.save(usuario)
+        return usuario.apply {
+            password = passwordEncoder.encode(password!!)
+        }
     }
 }

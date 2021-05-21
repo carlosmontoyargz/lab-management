@@ -22,13 +22,27 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.rest.dto;
 
-import mx.buap.cs.labmngmnt.model.EntradaBitacora
-import org.springframework.data.repository.PagingAndSortingRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import mx.buap.cs.labmngmnt.model.Profesor;
+import org.springframework.data.rest.core.config.Projection;
 
-@RepositoryRestResource
-interface BitacoraController : PagingAndSortingRepository<EntradaBitacora, Int>
+import java.time.LocalDateTime;
+
+/**
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@Projection(types = Profesor.class)
+public interface ProfesorView
 {
+    String getMatricula();
+    String getCorreo();
+    String getNombre();
+    String getApellidoPaterno();
+    String getApellidoMaterno();
+    String getTelefono();
+    LocalDateTime getCreado();
+    boolean isActivo();
+    boolean isResponsable();
 }

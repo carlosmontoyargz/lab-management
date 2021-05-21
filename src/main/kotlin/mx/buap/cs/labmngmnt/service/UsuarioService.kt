@@ -34,5 +34,5 @@ import java.util.*
  */
 interface UsuarioService
 {
-    fun registrar(usuario: Usuario): Usuario
+    fun preregistrar(usuario: Usuario): Usuario
 }
