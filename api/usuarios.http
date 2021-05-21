@@ -52,6 +52,5 @@ Content-Type: application/json
   "apellidoMaterno": "Gomez",
   "matricula": "201135410",
   "telefono": "21244495121",
-  "activo": true,
-  "creado": "2021-05-19T23:30:20.839686"
+  "activo": true
 }

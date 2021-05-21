@@ -42,5 +42,7 @@ interface UsuarioRepository : JpaRepository<Usuario, Int>
 
     fun existsByCorreo(correo: String): Boolean
 
+    fun existsByMatricula(matricula: String): Boolean
+
     fun findAllBy(): List<UsuarioDto>
 }

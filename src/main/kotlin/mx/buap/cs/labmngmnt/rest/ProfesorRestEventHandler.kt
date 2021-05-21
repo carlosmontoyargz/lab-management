@@ -22,20 +22,25 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.service
+package mx.buap.cs.labmngmnt.rest
 
 import mx.buap.cs.labmngmnt.error.SignUpException
-import mx.buap.cs.labmngmnt.model.Usuario
-import java.util.*
+import mx.buap.cs.labmngmnt.model.Profesor
+import mx.buap.cs.labmngmnt.service.UsuarioService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.rest.core.annotation.HandleBeforeCreate
+import org.springframework.data.rest.core.annotation.RepositoryEventHandler
+import org.springframework.stereotype.Component
 import kotlin.jvm.Throws
 
-/**
- *
- * @author Carlos Montoya
- * @since 1.0
- */
-interface UsuarioService
+@Component
+@RepositoryEventHandler(Profesor::class)
+class ProfesorRestEventHandler
+    @Autowired constructor(val usuarioService: UsuarioService)
 {
+    @HandleBeforeCreate
     @Throws(SignUpException::class)
-    fun preregistrar(usuario: Usuario): Usuario
+    fun handleBeforeCreate(profesor: Profesor) {
+        usuarioService.preregistrar(profesor)
+    }
 }

@@ -22,33 +22,28 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.config
 
-import mx.buap.cs.labmngmnt.error.SignUpException
-import mx.buap.cs.labmngmnt.error.UserNotFoundException
-import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.data.domain.AuditorAware
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing
+import org.springframework.security.core.context.SecurityContextHolder
+import java.util.*
 
-@ControllerAdvice
-class UserNotFoundAdvice
+@Configuration
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
+class JpaAuditingConfiguration
 {
-    @ResponseBody
-    @ExceptionHandler(UserNotFoundException::class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun employeeNotFoundHandler(ex: UserNotFoundException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
-
-    @ResponseBody
-    @ExceptionHandler(SignUpException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun signUpHandler(ex: SignUpException) =
-        ErrorResponse(
-            mensaje = ex.message,
-            tipo = ex.javaClass.simpleName)
+    @Bean
+    fun auditorProvider(): AuditorAware<String> =
+        AuditorAware {
+            if (SecurityContextHolder.getContext().authentication == null) {
+                Optional.empty()
+            }
+            else {
+                Optional.ofNullable(
+                    SecurityContextHolder.getContext().authentication.name)
+            }
+        }
 }

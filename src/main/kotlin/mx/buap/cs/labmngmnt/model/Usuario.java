@@ -24,6 +24,9 @@
 
 package mx.buap.cs.labmngmnt.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -33,6 +36,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@EntityListeners(AuditingEntityListener.class)
 public class Usuario
 {
     @Id
@@ -62,7 +66,8 @@ public class Usuario
     @Column(length = 20)
     private String telefono;
 
-    @Column(nullable = false, updatable = false)
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime creado;
 
     @Column(nullable = false)

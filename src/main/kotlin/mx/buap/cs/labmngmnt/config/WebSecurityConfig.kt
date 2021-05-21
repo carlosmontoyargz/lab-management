@@ -22,8 +22,10 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.security
+package mx.buap.cs.labmngmnt.config
 
+import mx.buap.cs.labmngmnt.security.JwtAuthenticationEntryPoint
+import mx.buap.cs.labmngmnt.security.JwtRequestFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
