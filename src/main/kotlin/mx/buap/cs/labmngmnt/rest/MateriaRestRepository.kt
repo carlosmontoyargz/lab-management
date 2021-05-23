@@ -25,7 +25,7 @@
 package mx.buap.cs.labmngmnt.rest
 
 import mx.buap.cs.labmngmnt.model.Materia
-import mx.buap.cs.labmngmnt.rest.dto.MateriaView
+import mx.buap.cs.labmngmnt.model.views.MateriaView
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 

@@ -30,7 +30,6 @@ import mx.buap.cs.labmngmnt.model.Usuario
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import java.util.*
 import kotlin.jvm.Throws
 
 /**
@@ -42,19 +41,22 @@ import kotlin.jvm.Throws
 class UsuarioServiceImpl
     @Autowired constructor(
         val usuarioRepository: UsuarioRepository,
-        val passwordEncoder: PasswordEncoder)
+        val passEncoder: PasswordEncoder)
     : UsuarioService
 {
     @Throws(SignUpException::class)
     override fun preregistrar(usuario: Usuario): Usuario {
         if (usuarioRepository.existsByCorreo(usuario.correo!!))
-            throw SignUpException("El correo ya se encuentra registrado en el sistema.")
+            throw SignUpException(
+                "El correo ya se encuentra registrado en el sistema.")
 
         if (usuarioRepository.existsByMatricula(usuario.matricula!!))
-            throw SignUpException("La matrícula ya se encuentra registrada en el sistema.")
+            throw SignUpException(
+                "La matrícula ya se encuentra registrada en el sistema.")
 
-        return usuario.apply {
-            password = passwordEncoder.encode(password!!)
-        }
+        return encodePassword(usuario);
     }
+
+    override fun encodePassword(usuario: Usuario) =
+        usuario.apply { password = passEncoder.encode(password!!) }
 }

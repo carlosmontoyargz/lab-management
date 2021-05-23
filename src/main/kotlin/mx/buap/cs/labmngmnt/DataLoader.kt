@@ -43,7 +43,7 @@ import java.time.LocalDateTime
  * @since 1.0
  */
 @Component
-class DataLoader
+class InitialDataLoader
     @Autowired constructor(
         val usuarioService: UsuarioService,
         val usuarioRepository: UsuarioRepository,
@@ -66,7 +66,6 @@ class DataLoader
                 telefono = "2125295121"
                 isActivo = true
                 isResponsable = true
-                isConfirmado = true
             }))
         val colaborador = usuarioRepository.save(
             usuarioService.preregistrar(Colaborador().apply {
@@ -80,7 +79,6 @@ class DataLoader
                 telefono = "3324697114"
                 isActivo = true
                 isResponsable = true
-                isConfirmado = true
                 carrera = "ICC"
                 inicioServicio = LocalDateTime.now().minusMonths(4)
                 conclusionServicio = LocalDateTime.now()

@@ -43,9 +43,7 @@ import kotlin.jvm.Throws
  * @author Carlos Montoya
  * @since 1.0
  */
-@Service
-@Primary
-class UserDetailsServiceImpl
+@Primary @Service class UserDetailsServiceImpl
     @Autowired constructor(
         val usuarioRepository: UsuarioRepository
     )
@@ -56,10 +54,12 @@ class UserDetailsServiceImpl
         usuarioRepository
             .findByCorreo(username!!)
             .map { usuario ->
-                User(username, usuario.password!!, createAuthorities(usuario))
+                User(username, usuario.password!!, usuario.isActivo,
+                    true, true, true,
+                    createAuthorities(usuario))
             }
             .orElseThrow {
-                UsernameNotFoundException("User not found with username: $username")
+                UsernameNotFoundException("Usuario $username no encontrado")
             }
 
     private fun createAuthorities(usuario: Usuario): List<SimpleGrantedAuthority> {

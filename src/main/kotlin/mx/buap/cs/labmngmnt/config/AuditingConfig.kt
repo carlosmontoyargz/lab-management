@@ -33,17 +33,16 @@ import java.util.*
 
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
-class JpaAuditingConfiguration
+class AuditingConfig
 {
     @Bean
     fun auditorProvider(): AuditorAware<String> =
         AuditorAware {
-            if (SecurityContextHolder.getContext().authentication == null) {
-                Optional.empty()
-            }
-            else {
-                Optional.ofNullable(
-                    SecurityContextHolder.getContext().authentication.name)
-            }
+            Optional.ofNullable(
+                if (SecurityContextHolder.getContext().authentication == null)
+                    null
+                else
+                    SecurityContextHolder.getContext().authentication.name
+            )
         }
 }

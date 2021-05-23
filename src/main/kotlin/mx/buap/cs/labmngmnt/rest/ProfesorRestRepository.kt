@@ -25,7 +25,7 @@
 package mx.buap.cs.labmngmnt.rest
 
 import mx.buap.cs.labmngmnt.model.Profesor
-import mx.buap.cs.labmngmnt.rest.dto.ProfesorView
+import mx.buap.cs.labmngmnt.model.views.ProfesorView
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
@@ -33,5 +33,3 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource
     excerptProjection = ProfesorView::class,
     path = "profesores", collectionResourceRel = "profesores")
 interface ProfesorRestRepository: JpaRepository<Profesor, Int>
-{
-}

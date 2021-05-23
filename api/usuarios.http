@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 
-GET localhost:8080/api/usuarios
+GET localhost:8080/api/documentos
 Authorization: Bearer {{auth_token}}
 
 
@@ -26,12 +26,6 @@ GET localhost:8080/api/colaboradores/2
 Authorization: Bearer {{auth_token}}
 
 
-###
-
-GET localhost:8080/api/documentos
-Authorization: Bearer {{auth_token}}
-
-
 ### Profesores
 
 GET localhost:8080/api/profesores
@@ -44,13 +38,57 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
+  "matricula": "201465410",
   "correo": "luis.perez@profesor.buap.mx",
   "password": "luis.perez",
   "responsable": true,
   "nombre": "Luis",
   "apellidoPaterno": "Perez",
   "apellidoMaterno": "Gomez",
-  "matricula": "201135410",
-  "telefono": "21244495121",
+  "telefono": "2124495121",
   "activo": true
+}
+
+> {% client.global.set("prof_loc", response.headers.valueOf("Location") ); %}
+
+###
+
+GET {{prof_loc}}
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET {{prof_loc}}?projection=profesorView
+Authorization: Bearer {{auth_token}}
+
+###
+
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+  "username": "luis.perez@profesor.buap.mx",
+  "password": "luis.perez"
+}
+
+###
+
+PATCH {{prof_loc}}
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "password": "luis.perez1",
+  "nombre": "Luis Ramiro",
+  "activo": false
+}
+
+###
+
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+"username": "luis.perez@profesor.buap.mx",
+"password": "luis.perez1"
 }

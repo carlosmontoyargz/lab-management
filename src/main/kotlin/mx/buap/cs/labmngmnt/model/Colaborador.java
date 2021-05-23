@@ -44,7 +44,8 @@ public class Colaborador extends Usuario
     private LocalDateTime inicioServicio;
     private LocalDateTime conclusionServicio;
 
-    @OneToOne(mappedBy = "colaborador", cascade = CascadeType.ALL,
+    @OneToOne(
+            mappedBy = "colaborador", cascade = CascadeType.ALL,
             fetch = FetchType.EAGER, optional = false)
     private TiempoPrestado tiempoPrestado;
 
@@ -71,16 +72,16 @@ public class Colaborador extends Usuario
         tiempoPrestado.incrementar(tiempo);
     }
 
-    public void setTiempoPrestado(TiempoPrestado tiempoPrestado) {
-        if (tiempoPrestado == null) {
+    public void setTiempoPrestado(TiempoPrestado tiempo) {
+        if (tiempo == null) {
             if (this.tiempoPrestado != null) {
                 this.tiempoPrestado.setColaborador(null);
             }
         }
         else {
-            tiempoPrestado.setColaborador(this);
+            tiempo.setColaborador(this);
         }
-        this.tiempoPrestado = tiempoPrestado;
+        this.tiempoPrestado = tiempo;
     }
 
     public TiempoPrestado getTiempoPrestado() {

@@ -35,20 +35,21 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
-class UsuarioController
-    @Autowired constructor(
-        val usuarioRepository: UsuarioRepository)
-{
-    @GetMapping("/usuarios")
-    fun all(): List<UsuarioDto> {
-        return usuarioRepository.findAllBy()
-    }
-
-    @GetMapping("/usuarios/{id}")
-    fun one(@PathVariable id: Int): Usuario {
-        return usuarioRepository
-            .findById(id)
-            .orElseThrow { UserNotFoundException(id) }
-    }
-}
+//@RestController
+//@RequestMapping("/api/v0")
+//class UsuarioController
+//    @Autowired constructor(
+//        val usuarioRepository: UsuarioRepository)
+//{
+//    @GetMapping("/usuarios")
+//    fun all(): List<UsuarioDto> {
+//        return usuarioRepository.findAllBy()
+//    }
+//
+////    @GetMapping("/usuarios/{id}")
+////    fun one(@PathVariable id: Int): Usuario {
+////        return usuarioRepository
+////            .findById(id)
+////            .orElseThrow { UserNotFoundException(id) }
+////    }
+//}

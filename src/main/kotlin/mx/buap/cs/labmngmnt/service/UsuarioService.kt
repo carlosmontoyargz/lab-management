@@ -38,4 +38,6 @@ interface UsuarioService
 {
     @Throws(SignUpException::class)
     fun preregistrar(usuario: Usuario): Usuario
+
+    fun encodePassword(usuario: Usuario): Usuario
 }

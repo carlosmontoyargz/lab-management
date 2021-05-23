@@ -52,7 +52,7 @@ import org.springframework.security.data.repository.query.SecurityEvaluationCont
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig
     @Autowired constructor(
-        val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
+        val authEntryPoint: JwtAuthenticationEntryPoint,
         val userDetailsService: UserDetailsService,
         val jwtRequestFilter: JwtRequestFilter
     )
@@ -90,9 +90,11 @@ class WebSecurityConfig
             .anyRequest().authenticated() // todas las solicitudes a /api/ necesitan ser autenticadas
             .and()
             // Add a filter to validate the tokens with every request
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(
+                jwtRequestFilter,
+                UsernamePasswordAuthenticationFilter::class.java)
             .exceptionHandling()
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            .authenticationEntryPoint(authEntryPoint)
             .and()
             .sessionManagement() // stateless session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

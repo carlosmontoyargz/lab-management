@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.core.userdetails.UserDetails
 import kotlin.jvm.Throws
 
 /**
@@ -50,7 +51,6 @@ import kotlin.jvm.Throws
 class AuthenticationController
     @Autowired constructor(
         val authenticationManager: AuthenticationManager,
-        val userDetailsService: UserDetailsService,
         val jwtTokenUtil: JwtTokenUtil)
 {
     @PostMapping("/autenticar")
@@ -59,18 +59,17 @@ class AuthenticationController
         @RequestBody request: AutenticacionRequest):
             ResponseEntity<AutenticacionResponse>
     {
-        authenticationManager
-            .authenticate(UsernamePasswordAuthenticationToken(
+        val authentication = authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken(
                 request.username!!, request.password!!))
-
-        val userDetails = userDetailsService.loadUserByUsername(request.username!!)
 
         return ResponseEntity.ok(
             AutenticacionResponse(
-                token = jwtTokenUtil.generateToken(userDetails),
-                roles = userDetails.authorities.stream()
+                token = jwtTokenUtil
+                    .generateToken(authentication.principal as UserDetails),
+                roles = authentication.authorities.stream()
                     .map { it.authority }
-                    .toArray { length -> arrayOfNulls(length) }
+                    .toArray { arrayOfNulls(it) }
             )
         )
     }

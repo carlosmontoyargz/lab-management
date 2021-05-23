@@ -29,6 +29,7 @@ import mx.buap.cs.labmngmnt.model.Profesor
 import mx.buap.cs.labmngmnt.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate
+import org.springframework.data.rest.core.annotation.HandleBeforeSave
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler
 import org.springframework.stereotype.Component
 import kotlin.jvm.Throws
@@ -42,5 +43,10 @@ class ProfesorRestEventHandler
     @Throws(SignUpException::class)
     fun handleBeforeCreate(profesor: Profesor) {
         usuarioService.preregistrar(profesor)
+    }
+
+    @HandleBeforeSave
+    fun hanldeBeforeSave(profesor: Profesor) {
+        usuarioService.encodePassword(profesor)
     }
 }

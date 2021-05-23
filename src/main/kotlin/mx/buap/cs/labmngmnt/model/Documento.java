@@ -36,8 +36,10 @@ public class Documento
 {
     @Id
     @Column(name = "documento_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documento_generator")
-    @SequenceGenerator(name = "documento_generator", sequenceName = "documento_seq", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE, generator = "doc_gr")
+    @SequenceGenerator(
+            name = "doc_gr", sequenceName = "doc_seq", allocationSize = 1)
     private int id;
 
     @Column(nullable = false)

@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest.dto;
+package mx.buap.cs.labmngmnt.model.views;
 
 import mx.buap.cs.labmngmnt.model.Profesor;
 import org.springframework.data.rest.core.config.Projection;

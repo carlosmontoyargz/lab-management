@@ -24,6 +24,8 @@
 
 package mx.buap.cs.labmngmnt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -52,6 +54,7 @@ public class Usuario
     private String correo;
 
     @Column(length = 100, nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(length = 80, nullable = false)
@@ -71,10 +74,22 @@ public class Usuario
     private LocalDateTime creado;
 
     @Column(nullable = false)
-    private boolean activo;
+    private boolean activo = true;
 
-    @Column(nullable = false)
-    private boolean confirmado;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Usuario)) return false;
+
+        Usuario usuario = (Usuario) o;
+
+        return id == usuario.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 
     public int getId() {
         return id;
@@ -154,28 +169,5 @@ public class Usuario
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
-
-    public boolean isConfirmado() {
-        return confirmado;
-    }
-
-    public void setConfirmado(boolean confirmado) {
-        this.confirmado = confirmado;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Usuario)) return false;
-
-        Usuario usuario = (Usuario) o;
-
-        return id == usuario.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }
