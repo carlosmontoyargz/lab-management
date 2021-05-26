@@ -25,9 +25,9 @@
 package mx.buap.cs.labmngmnt
 
 import mx.buap.cs.labmngmnt.model.*
-import mx.buap.cs.labmngmnt.repository.DocumentoRepository
 import mx.buap.cs.labmngmnt.repository.MateriaRepository
 import mx.buap.cs.labmngmnt.repository.UsuarioRepository
+import mx.buap.cs.labmngmnt.rest.DocumentoRestRepository
 import mx.buap.cs.labmngmnt.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -35,6 +35,7 @@ import org.springframework.context.ApplicationListener
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 /**
@@ -48,7 +49,7 @@ class InitialDataLoader
         val usuarioService: UsuarioService,
         val usuarioRepository: UsuarioRepository,
         val materiaRepository: MateriaRepository,
-        val documentoRepository: DocumentoRepository
+        val documentoRepository: DocumentoRestRepository
     )
     : ApplicationListener<ApplicationReadyEvent>
 {
@@ -80,8 +81,8 @@ class InitialDataLoader
                 isActivo = true
                 isResponsable = true
                 carrera = "ICC"
-                inicioServicio = LocalDateTime.now().minusMonths(4)
-                conclusionServicio = LocalDateTime.now()
+                inicioServicio = LocalDate.now().minusMonths(4)
+                conclusionServicio = LocalDate.now()
                 tiempoPrestado = TiempoPrestado().apply {
                     incrementar(Duration.ofHours(122).plusMinutes(43))
                 }

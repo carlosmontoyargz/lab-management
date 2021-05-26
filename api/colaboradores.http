@@ -1,0 +1,111 @@
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+  "username": "carlos.montoya@profesor.buap.mx",
+  "password": "admin"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###
+
+GET localhost:8080/api/colaboradores/
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET localhost:8080/api/colaboradores/2
+Authorization: Bearer {{auth_token}}
+
+###
+
+POST http://localhost:8080/api/colaboradores
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "matricula": "201627712",
+  "correo": "rodrigo.hernandez@alumno.buap.mx",
+  "password": "rod.her",
+  "nombre": "Rodrigo",
+  "apellidoPaterno": "Hernandez",
+  "apellidoMaterno": "Ruiz",
+  "telefono": "2228291244",
+  "activo": true,
+  "carrera": "Ingeniería en Tecnologías de la Información",
+  "responsable": true
+}
+
+> {% client.global.set("col_loc", response.headers.valueOf("Location") ); %}
+
+###
+
+GET {{col_loc}}
+Authorization: Bearer {{auth_token}}
+
+###
+
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+  "username": "rodrigo.hernandez@alumno.buap.mx",
+  "password": "rod.her"
+}
+
+###
+
+PATCH {{col_loc}}
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "password": "rod.her1",
+  "nombre": "Rodrigo Antonio",
+  "inicioServicio": "2020-02-03"
+}
+
+###
+
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+  "username": "rodrigo.hernandez@alumno.buap.mx",
+  "password": "rod.her1"
+}
+
+###
+
+GET localhost:8080/api/documentos/
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET localhost:8080/api/colaboradores/2/documentos
+Authorization: Bearer {{auth_token}}
+
+###
+
+POST localhost:8080/api/colaboradores/2/documentos
+Authorization: Bearer {{auth_token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="multipartFile"; filename="documento.docx"
+
+< files/documento.docx
+--WebAppBoundary--
+
+###
+
+GET localhost:8080/documentoLobs/2
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET localhost:8080/documentoLobs/3
+Authorization: Bearer {{auth_token}}
+
+###

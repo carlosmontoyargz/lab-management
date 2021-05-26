@@ -24,32 +24,30 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.error.UserNotFoundException
-import mx.buap.cs.labmngmnt.model.Usuario
-import mx.buap.cs.labmngmnt.repository.UsuarioRepository
-import mx.buap.cs.labmngmnt.rest.dto.UsuarioDto
+import mx.buap.cs.labmngmnt.error.DocumentoNoEncontradoException
+import mx.buap.cs.labmngmnt.error.UsuarioNoEncontradoException
+import mx.buap.cs.labmngmnt.repository.DocumentoLobRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.rest.webmvc.RepositoryRestController
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.core.io.Resource
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-//@RestController
-//@RequestMapping("/api/v0")
-//class UsuarioController
-//    @Autowired constructor(
-//        val usuarioRepository: UsuarioRepository)
-//{
-//    @GetMapping("/usuarios")
-//    fun all(): List<UsuarioDto> {
-//        return usuarioRepository.findAllBy()
-//    }
-//
-////    @GetMapping("/usuarios/{id}")
-////    fun one(@PathVariable id: Int): Usuario {
-////        return usuarioRepository
-////            .findById(id)
-////            .orElseThrow { UserNotFoundException(id) }
-////    }
-//}
+/**
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@RestController
+class DocumentoDownloadController
+    @Autowired constructor(
+        val documentoLobRepository: DocumentoLobRepository)
+{
+    @GetMapping("/documentoLobs/{id}", produces = [MediaType.ALL_VALUE])
+    fun descargarDocumento(@PathVariable id: Int): Resource =
+        documentoLobRepository
+            .findById(id)
+            .map { doc -> ByteArrayResource(doc.contenido) }
+            .orElseThrow { DocumentoNoEncontradoException(id) }
+}

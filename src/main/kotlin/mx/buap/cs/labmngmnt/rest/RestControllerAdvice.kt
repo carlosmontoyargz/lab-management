@@ -24,8 +24,9 @@
 
 package mx.buap.cs.labmngmnt.rest
 
+import mx.buap.cs.labmngmnt.error.DocumentoNoEncontradoException
 import mx.buap.cs.labmngmnt.error.SignUpException
-import mx.buap.cs.labmngmnt.error.UserNotFoundException
+import mx.buap.cs.labmngmnt.error.UsuarioNoEncontradoException
 import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -47,9 +48,11 @@ class RestControllerAdvice
     fun signUpHandler(ex: SignUpException) = defaultResponse(ex)
 
     @ResponseBody
-    @ExceptionHandler(UserNotFoundException::class)
+    @ExceptionHandler(
+        UsuarioNoEncontradoException::class,
+        DocumentoNoEncontradoException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun userNotFoundHandler(ex: UserNotFoundException) = defaultResponse(ex)
+    fun userNotFoundHandler(ex: Exception) = defaultResponse(ex)
 
     private fun defaultResponse(ex: Exception) =
         ErrorResponse(

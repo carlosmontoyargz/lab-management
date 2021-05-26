@@ -25,7 +25,6 @@
 package mx.buap.cs.labmngmnt.repository
 
 import mx.buap.cs.labmngmnt.model.Usuario
-import mx.buap.cs.labmngmnt.rest.dto.UsuarioDto
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 import java.util.*

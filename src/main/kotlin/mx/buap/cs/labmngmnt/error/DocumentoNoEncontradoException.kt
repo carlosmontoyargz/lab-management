@@ -22,31 +22,7 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.error
 
-import mx.buap.cs.labmngmnt.error.SignUpException
-import mx.buap.cs.labmngmnt.model.Profesor
-import mx.buap.cs.labmngmnt.service.UsuarioService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.rest.core.annotation.HandleBeforeCreate
-import org.springframework.data.rest.core.annotation.HandleBeforeSave
-import org.springframework.data.rest.core.annotation.RepositoryEventHandler
-import org.springframework.stereotype.Component
-import kotlin.jvm.Throws
-
-@Component
-@RepositoryEventHandler(Profesor::class)
-class ProfesorRestEventHandler
-    @Autowired constructor(val usuarioService: UsuarioService)
-{
-    @HandleBeforeCreate
-    @Throws(SignUpException::class)
-    fun handleBeforeCreate(profesor: Profesor) {
-        usuarioService.preregistrar(profesor)
-    }
-
-    @HandleBeforeSave
-    fun hanldeBeforeSave(profesor: Profesor) {
-        usuarioService.encodePassword(profesor)
-    }
-}
+class DocumentoNoEncontradoException(id: Int):
+        RuntimeException("No se ha encontrado documento $id")

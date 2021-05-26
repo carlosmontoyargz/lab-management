@@ -43,10 +43,10 @@ import kotlin.jvm.Throws
  * @author Carlos Montoya
  * @since 1.0
  */
-@Primary @Service class UserDetailsServiceImpl
-    @Autowired constructor(
-        val usuarioRepository: UsuarioRepository
-    )
+@Primary
+@Service
+class UserDetailsServiceImpl
+    @Autowired constructor(val usuarioRepository: UsuarioRepository)
     : UserDetailsService
 {
     @Throws(UsernameNotFoundException::class)

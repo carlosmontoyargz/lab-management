@@ -34,6 +34,7 @@ import javax.persistence.*;
 public class DocumentoLob
 {
     @Id
+    @Column(name = "documento_id")
     private int id;
 
     @OneToOne
@@ -41,7 +42,7 @@ public class DocumentoLob
     private Documento documento;
 
     @Lob
-    @Column(columnDefinition = "BYTEA")
+//    @Column(columnDefinition = "BYTEA")
     private byte[] contenido;
 
     public int getId() {

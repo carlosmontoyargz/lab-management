@@ -24,6 +24,9 @@
 
 package mx.buap.cs.labmngmnt.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -32,6 +35,7 @@ import java.time.LocalDateTime;
  * @since 1.0
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Documento
 {
     @Id
@@ -45,7 +49,7 @@ public class Documento
     @Column(nullable = false)
     private String nombre;
 
-    @Column(nullable = false)
+    @CreatedDate
     private LocalDateTime fechaCreacion;
 
     @ManyToOne(fetch = FetchType.LAZY)

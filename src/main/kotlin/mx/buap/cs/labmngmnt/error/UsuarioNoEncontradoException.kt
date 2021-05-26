@@ -22,11 +22,9 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.error
 
-import mx.buap.cs.labmngmnt.model.Documento
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import java.lang.RuntimeException
 
-@RepositoryRestResource(path = "documentos", collectionResourceRel = "documentos")
-interface DocumentoRestRepository: JpaRepository<Documento, Int>
+class UsuarioNoEncontradoException(id: Int):
+    RuntimeException("No se encontró usuario $id")

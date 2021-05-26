@@ -22,11 +22,11 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.repository
 
-import mx.buap.cs.labmngmnt.model.Documento
-import org.springframework.data.jpa.repository.JpaRepository
+import mx.buap.cs.labmngmnt.model.DocumentoLob
+import org.springframework.data.repository.CrudRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(path = "documentos", collectionResourceRel = "documentos")
-interface DocumentoRestRepository: JpaRepository<Documento, Int>
+@RepositoryRestResource(exported = false)
+interface DocumentoLobRepository: CrudRepository<DocumentoLob, Int>

@@ -8,24 +8,6 @@ Content-Type: application/json
 
 > {% client.global.set("auth_token", response.body.token); %}
 
-###
-
-GET localhost:8080/api/documentos
-Authorization: Bearer {{auth_token}}
-
-
-###
-
-GET localhost:8080/api/colaboradores/
-Authorization: Bearer {{auth_token}}
-
-
-###
-
-GET localhost:8080/api/colaboradores/2
-Authorization: Bearer {{auth_token}}
-
-
 ### Profesores
 
 GET localhost:8080/api/profesores

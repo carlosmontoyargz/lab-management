@@ -30,7 +30,6 @@ import mx.buap.cs.labmngmnt.security.JwtTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -50,16 +49,15 @@ import kotlin.jvm.Throws
 @CrossOrigin
 class AuthenticationController
     @Autowired constructor(
-        val authenticationManager: AuthenticationManager,
+        val authManager: AuthenticationManager,
         val jwtTokenUtil: JwtTokenUtil)
 {
     @PostMapping("/autenticar")
     @Throws(AuthenticationException::class)
-    fun crearTokenAutenticacion(
-        @RequestBody request: AutenticacionRequest):
+    fun autenticar(@RequestBody request: AutenticacionRequest):
             ResponseEntity<AutenticacionResponse>
     {
-        val authentication = authenticationManager.authenticate(
+        val authentication = authManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 request.username!!, request.password!!))
 

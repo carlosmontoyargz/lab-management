@@ -22,13 +22,31 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.repository
+package mx.buap.cs.labmngmnt.service
 
 import mx.buap.cs.labmngmnt.model.Documento
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import mx.buap.cs.labmngmnt.model.DocumentoLob
+import mx.buap.cs.labmngmnt.repository.DocumentoLobRepository
+import mx.buap.cs.labmngmnt.rest.DocumentoRestRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
-@RepositoryRestResource
-interface DocumentoRepository: JpaRepository<Documento, Int>
+@Service
+class DocumentoServiceImpl
+    @Autowired constructor(
+        val documentoRepository: DocumentoRestRepository,
+        val documentoLobRepository: DocumentoLobRepository)
+    : DocumentoService
 {
+    @Transactional
+    override fun guardar(documento: Documento, bytes: ByteArray): Documento {
+        val documentoDb = documentoRepository.save(documento)
+        documentoLobRepository.save(
+            DocumentoLob().apply {
+                this.documento = documentoDb
+                this.contenido = bytes
+            })
+        return documentoDb
+    }
 }

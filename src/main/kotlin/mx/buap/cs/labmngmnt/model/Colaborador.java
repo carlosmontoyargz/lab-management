@@ -26,7 +26,7 @@ package mx.buap.cs.labmngmnt.model;
 
 import javax.persistence.*;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,22 +41,37 @@ public class Colaborador extends Usuario
     @Column(length = 60)
     private String carrera;
 
-    private LocalDateTime inicioServicio;
-    private LocalDateTime conclusionServicio;
+    private LocalDate inicioServicio;
+    private LocalDate conclusionServicio;
 
     @OneToOne(
-            mappedBy = "colaborador", cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, optional = false)
+            mappedBy = "colaborador",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
     private TiempoPrestado tiempoPrestado;
 
     @Column(nullable = false)
-    private boolean responsable;
+    private boolean responsable = false;
 
     @OneToMany(
             mappedBy = "colaborador",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private final List<Documento> documentos = new LinkedList<>();
+
+    @PrePersist
+    public void crearTiempoPrestado() {
+        if (tiempoPrestado == null)
+            setTiempoPrestado(new TiempoPrestado());
+    }
+
+    public void incrementarTiempoPrestado(Duration tiempo) {
+        tiempoPrestado.incrementar(tiempo);
+    }
+
+    public List<Documento> getDocumentos() {
+        return documentos;
+    }
 
     public void agregarDocumento(Documento documento) {
         documentos.add(documento);
@@ -66,10 +81,6 @@ public class Colaborador extends Usuario
     public void removerDocumento(Documento documento) {
         documentos.remove(documento);
         documento.setColaborador(null);
-    }
-
-    public void incrementarTiempoPrestado(Duration tiempo) {
-        tiempoPrestado.incrementar(tiempo);
     }
 
     public void setTiempoPrestado(TiempoPrestado tiempo) {
@@ -96,19 +107,19 @@ public class Colaborador extends Usuario
         this.carrera = carrera;
     }
 
-    public LocalDateTime getInicioServicio() {
+    public LocalDate getInicioServicio() {
         return inicioServicio;
     }
 
-    public void setInicioServicio(LocalDateTime inicioServicio) {
+    public void setInicioServicio(LocalDate inicioServicio) {
         this.inicioServicio = inicioServicio;
     }
 
-    public LocalDateTime getConclusionServicio() {
+    public LocalDate getConclusionServicio() {
         return conclusionServicio;
     }
 
-    public void setConclusionServicio(LocalDateTime conclusionServicio) {
+    public void setConclusionServicio(LocalDate conclusionServicio) {
         this.conclusionServicio = conclusionServicio;
     }
 
@@ -118,9 +129,5 @@ public class Colaborador extends Usuario
 
     public void setResponsable(boolean responsable) {
         this.responsable = responsable;
-    }
-
-    public List<Documento> getDocumentos() {
-        return documentos;
     }
 }

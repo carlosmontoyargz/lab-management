@@ -30,6 +30,3 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
 interface ColaboradorRestRepository: JpaRepository<Colaborador, Int>
-{
-    fun findAllBy(): Colaborador
-}

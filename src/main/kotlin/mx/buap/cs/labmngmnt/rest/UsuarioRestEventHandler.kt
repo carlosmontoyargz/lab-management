@@ -24,9 +24,29 @@
 
 package mx.buap.cs.labmngmnt.rest
 
-import mx.buap.cs.labmngmnt.model.Documento
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import mx.buap.cs.labmngmnt.error.SignUpException
+import mx.buap.cs.labmngmnt.model.Usuario
+import mx.buap.cs.labmngmnt.service.UsuarioService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.rest.core.annotation.HandleBeforeCreate
+import org.springframework.data.rest.core.annotation.HandleBeforeSave
+import org.springframework.data.rest.core.annotation.RepositoryEventHandler
+import org.springframework.stereotype.Component
+import kotlin.jvm.Throws
 
-@RepositoryRestResource(path = "documentos", collectionResourceRel = "documentos")
-interface DocumentoRestRepository: JpaRepository<Documento, Int>
+@Component
+@RepositoryEventHandler(Usuario::class)
+class UsuarioRestEventHandler
+    @Autowired constructor(val usuarioService: UsuarioService)
+{
+    @HandleBeforeCreate
+    @Throws(SignUpException::class)
+    fun handleBeforeCreate(usuario: Usuario) {
+        usuarioService.preregistrar(usuario)
+    }
+
+    @HandleBeforeSave
+    fun hanldeBeforeSave(usuario: Usuario) {
+        usuarioService.encodePassword(usuario)
+    }
+}

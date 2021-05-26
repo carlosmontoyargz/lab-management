@@ -22,9 +22,15 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.error
+package mx.buap.cs.labmngmnt.service
 
-import java.lang.RuntimeException
+import mx.buap.cs.labmngmnt.model.Documento
 
-class UserNotFoundException(id: Int):
-    RuntimeException("No se encontró usuario $id")
+/**
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+interface DocumentoService
+{
+    fun guardar(documento: Documento, bytes: ByteArray): Documento
+}
