@@ -58,6 +58,17 @@ class WebSecurityConfig
     )
     : WebSecurityConfigurerAdapter()
 {
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+    @Bean
+    override fun authenticationManagerBean(): AuthenticationManager =
+        super.authenticationManagerBean()
+
+    @Bean
+    fun securityEvaluationContextExtension(): SecurityEvaluationContextExtension? =
+        SecurityEvaluationContextExtension()
+
     /**
      * Configura AuthenticationManager con el componente de detalles de
      * usuario y el codificador de contraseñas BCrypt
@@ -70,17 +81,6 @@ class WebSecurityConfig
             .userDetailsService(userDetailsService)
             .passwordEncoder(passwordEncoder())
     }
-
-    @Bean
-    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
-
-    @Bean
-    override fun authenticationManagerBean(): AuthenticationManager =
-        super.authenticationManagerBean()
-
-    @Bean
-    fun securityEvaluationContextExtension(): SecurityEvaluationContextExtension? =
-        SecurityEvaluationContextExtension()
 
     override fun configure(httpSecurity: HttpSecurity?) {
         httpSecurity!!

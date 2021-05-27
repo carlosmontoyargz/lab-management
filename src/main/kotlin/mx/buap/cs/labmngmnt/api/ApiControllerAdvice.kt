@@ -22,13 +22,14 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api
 
 import mx.buap.cs.labmngmnt.error.DocumentoNoEncontradoException
 import mx.buap.cs.labmngmnt.error.SignUpException
 import mx.buap.cs.labmngmnt.error.UsuarioNoEncontradoException
-import mx.buap.cs.labmngmnt.rest.dto.ErrorResponse
+import mx.buap.cs.labmngmnt.api.dto.ErrorResponse
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.AuthenticationException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
@@ -40,8 +41,14 @@ import org.springframework.web.bind.annotation.ResponseStatus
  * @since 1.0
  */
 @ControllerAdvice
-class RestControllerAdvice
+class ApiControllerAdvice
 {
+    @ResponseBody
+    @ExceptionHandler(AuthenticationException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun authenticationFailedHandler(ex: AuthenticationException) =
+        defaultResponse(ex)
+
     @ResponseBody
     @ExceptionHandler(SignUpException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

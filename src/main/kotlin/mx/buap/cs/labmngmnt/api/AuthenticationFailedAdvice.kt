@@ -22,11 +22,23 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.model.Colaborador
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import mx.buap.cs.labmngmnt.api.dto.ErrorResponse
+import org.springframework.http.HttpStatus
+import org.springframework.security.core.AuthenticationException
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.ResponseStatus
 
-@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
-interface ColaboradorRestRepository: JpaRepository<Colaborador, Int>
+/**
+ *
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@ControllerAdvice
+class AuthenticationFailedAdvice
+{
+
+}

@@ -22,47 +22,37 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.error.UsuarioNoEncontradoException
-import mx.buap.cs.labmngmnt.model.Documento
 import mx.buap.cs.labmngmnt.service.DocumentoService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.rest.webmvc.RepositoryRestController
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.core.io.Resource
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
-import java.net.URI
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 
 /**
  * @author Carlos Montoya
  * @since 1.0
  */
-@RepositoryRestController
-class DocumentoUploadController
+@RestController
+class DocumentoDownloadController
     @Autowired constructor(
-        val colaboradorRepository: ColaboradorRestRepository,
         val documentoService: DocumentoService)
 {
-    @PostMapping("/colaboradores/{colaboradorId}/documentos")
-    fun subirDocumento(
-        @PathVariable colaboradorId: Int,
-        @RequestParam multipartFile: MultipartFile)
-    : ResponseEntity<String>
+    @GetMapping("/archivos/{documentoId}"/*, produces = [MediaType.ALL_VALUE]*/)
+    fun descargarDocumento(@PathVariable documentoId: Int): ResponseEntity<Resource>
     {
-        val colaboradorDb = colaboradorRepository
-            .findById(colaboradorId)
-            .orElseThrow { UsuarioNoEncontradoException(colaboradorId) }
-
-        val documento = documentoService.guardar(
-            documento = Documento().apply {
-                nombre = multipartFile.originalFilename
-                colaborador = colaboradorDb
-            },
-            bytes = multipartFile.bytes)
-
+        val documentoLob = documentoService.encontrarLob(documentoId)
         return ResponseEntity
-            .created(URI.create("/documentos/${documento.id}"))
-            .build()
+            .ok()
+            .header(
+                HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"${documentoLob.documento.nombre}\"")
+            .body(ByteArrayResource(documentoLob.contenido))
     }
 }

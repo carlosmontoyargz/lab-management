@@ -22,25 +22,13 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest.dto;
+package mx.buap.cs.labmngmnt.api.dto
 
-/**
- * @author Carlos Montoya
- * @since 1.0
- */
-public class UsuarioDto
-{
-    private String nombre;
-
-    public UsuarioDto(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+open class AutenticacionResponse(
+    var token: String?,
+    var roles: Array<String>
+) {
+    companion object {
+        private const val serialVersionUID = -8091879091924046844L
     }
 }

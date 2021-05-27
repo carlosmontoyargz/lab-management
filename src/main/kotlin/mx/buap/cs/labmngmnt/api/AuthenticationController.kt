@@ -22,10 +22,10 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.rest.dto.AutenticacionRequest
-import mx.buap.cs.labmngmnt.rest.dto.AutenticacionResponse
+import mx.buap.cs.labmngmnt.api.dto.AutenticacionRequest
+import mx.buap.cs.labmngmnt.api.dto.AutenticacionResponse
 import mx.buap.cs.labmngmnt.security.JwtTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

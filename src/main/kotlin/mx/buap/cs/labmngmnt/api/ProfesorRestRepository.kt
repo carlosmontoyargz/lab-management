@@ -22,15 +22,14 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.model.Materia
-import mx.buap.cs.labmngmnt.model.views.MateriaView
-import org.springframework.data.repository.CrudRepository
+import mx.buap.cs.labmngmnt.model.Profesor
+import mx.buap.cs.labmngmnt.model.views.ProfesorView
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource
-interface MateriaRestRepository : CrudRepository<Materia, Int>
-{
-    fun findByClave(clave: String): MateriaView?
-}
+@RepositoryRestResource(
+    excerptProjection = ProfesorView::class,
+    path = "profesores", collectionResourceRel = "profesores")
+interface ProfesorRestRepository: JpaRepository<Profesor, Int>

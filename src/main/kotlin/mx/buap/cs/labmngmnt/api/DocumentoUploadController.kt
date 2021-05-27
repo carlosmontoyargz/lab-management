@@ -22,32 +22,47 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.error.DocumentoNoEncontradoException
 import mx.buap.cs.labmngmnt.error.UsuarioNoEncontradoException
-import mx.buap.cs.labmngmnt.repository.DocumentoLobRepository
+import mx.buap.cs.labmngmnt.model.Documento
+import mx.buap.cs.labmngmnt.service.DocumentoService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.ByteArrayResource
-import org.springframework.core.io.Resource
-import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.data.rest.webmvc.RepositoryRestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.net.URI
 
 /**
  * @author Carlos Montoya
  * @since 1.0
  */
-@RestController
-class DocumentoDownloadController
+@RepositoryRestController
+class DocumentoUploadController
     @Autowired constructor(
-        val documentoLobRepository: DocumentoLobRepository)
+        val colaboradorRepository: ColaboradorRestRepository,
+        val documentoService: DocumentoService)
 {
-    @GetMapping("/documentoLobs/{id}", produces = [MediaType.ALL_VALUE])
-    fun descargarDocumento(@PathVariable id: Int): Resource =
-        documentoLobRepository
-            .findById(id)
-            .map { doc -> ByteArrayResource(doc.contenido) }
-            .orElseThrow { DocumentoNoEncontradoException(id) }
+    @PostMapping("/colaboradores/{colaboradorId}/documentos")
+    fun subirDocumento(
+        @PathVariable colaboradorId: Int,
+        @RequestParam multipartFile: MultipartFile):
+            ResponseEntity<String>
+    {
+        val colaboradorDb = colaboradorRepository
+            .findById(colaboradorId)
+            .orElseThrow { UsuarioNoEncontradoException(colaboradorId) }
+
+        val documento = documentoService.guardar(
+            documento = Documento().apply {
+                nombre = multipartFile.originalFilename
+                colaborador = colaboradorDb
+            },
+            bytes = multipartFile.bytes)
+
+        return ResponseEntity
+            .created(URI.create("/documentos/${documento.id}")) //TODO url del recurso creado
+            .build()
+    }
 }

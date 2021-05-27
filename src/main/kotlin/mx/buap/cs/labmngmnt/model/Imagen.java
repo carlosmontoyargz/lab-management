@@ -22,14 +22,34 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.model;
 
-import mx.buap.cs.labmngmnt.model.Profesor
-import mx.buap.cs.labmngmnt.model.views.ProfesorView
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@RepositoryRestResource(
-    excerptProjection = ProfesorView::class,
-    path = "profesores", collectionResourceRel = "profesores")
-interface ProfesorRestRepository: JpaRepository<Profesor, Int>
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+/**
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class Imagen
+{
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "imagen_id", updatable = false, nullable = false)
+    private UUID id;
+
+    private String nombre;
+
+    @CreatedDate
+    private LocalDateTime creacion;
+}

@@ -22,13 +22,11 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest.dto
+package mx.buap.cs.labmngmnt.api
 
-open class AutenticacionRequest {
-    companion object {
-        private const val serialVersionUID = 5926468583005150707L
-    }
+import mx.buap.cs.labmngmnt.model.Documento
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-    var username: String? = null
-    var password: String? = null
-}
+@RepositoryRestResource(path = "documentos", collectionResourceRel = "documentos")
+interface DocumentoRestRepository: JpaRepository<Documento, Int>

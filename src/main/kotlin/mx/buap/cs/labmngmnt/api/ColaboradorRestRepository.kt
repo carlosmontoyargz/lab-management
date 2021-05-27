@@ -22,11 +22,11 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.model.Documento
+import mx.buap.cs.labmngmnt.model.Colaborador
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(path = "documentos", collectionResourceRel = "documentos")
-interface DocumentoRestRepository: JpaRepository<Documento, Int>
+@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
+interface ColaboradorRestRepository: JpaRepository<Colaborador, Int>

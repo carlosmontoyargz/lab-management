@@ -22,6 +22,50 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest.dto
+package mx.buap.cs.labmngmnt.model;
 
-open class ErrorResponse(var mensaje: String?, var tipo: String?)
+import javax.persistence.*;
+import java.util.UUID;
+
+/**
+ * @author Carlos Montoya
+ * @since 1.0
+ */
+@Entity
+public class ImagenLob
+{
+    @Id
+    @Column(name = "imagen_id")
+    private UUID id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Imagen imagen;
+
+    @Lob
+    private byte[] contenido;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Imagen getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Imagen imagen) {
+        this.imagen = imagen;
+    }
+
+    public byte[] getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(byte[] contenido) {
+        this.contenido = contenido;
+    }
+}

@@ -22,19 +22,6 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.service
+package mx.buap.cs.labmngmnt.api.dto
 
-import mx.buap.cs.labmngmnt.model.Documento
-import mx.buap.cs.labmngmnt.model.DocumentoLob
-import org.springframework.core.io.Resource
-
-/**
- * @author Carlos Montoya
- * @since 1.0
- */
-interface DocumentoService
-{
-    fun guardar(documento: Documento, bytes: ByteArray): Documento
-
-    fun encontrarLob(documentoId: Int): DocumentoLob
-}
+open class ErrorResponse(var mensaje: String?, var tipo: String?)

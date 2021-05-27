@@ -27,10 +27,12 @@ package mx.buap.cs.labmngmnt.service
 import mx.buap.cs.labmngmnt.model.Documento
 import mx.buap.cs.labmngmnt.model.DocumentoLob
 import mx.buap.cs.labmngmnt.repository.DocumentoLobRepository
-import mx.buap.cs.labmngmnt.rest.DocumentoRestRepository
+import mx.buap.cs.labmngmnt.api.DocumentoRestRepository
+import mx.buap.cs.labmngmnt.error.DocumentoNoEncontradoException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.jvm.Throws
 
 @Service
 class DocumentoServiceImpl
@@ -49,4 +51,10 @@ class DocumentoServiceImpl
             })
         return documentoDb
     }
+
+    @Throws(DocumentoNoEncontradoException::class)
+    override fun encontrarLob(documentoId: Int): DocumentoLob =
+        documentoLobRepository
+            .findById(documentoId)
+            .orElseThrow { DocumentoNoEncontradoException(documentoId) }
 }

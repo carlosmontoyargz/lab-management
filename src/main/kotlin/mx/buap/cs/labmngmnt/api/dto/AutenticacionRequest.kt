@@ -22,13 +22,13 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api.dto
 
-import mx.buap.cs.labmngmnt.model.EntradaBitacora
-import org.springframework.data.repository.PagingAndSortingRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+open class AutenticacionRequest {
+    companion object {
+        private const val serialVersionUID = 5926468583005150707L
+    }
 
-@RepositoryRestResource
-interface BitacoraRestRepository : PagingAndSortingRepository<EntradaBitacora, Int>
-{
+    var username: String? = null
+    var password: String? = null
 }

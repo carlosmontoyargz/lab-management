@@ -27,7 +27,7 @@ package mx.buap.cs.labmngmnt
 import mx.buap.cs.labmngmnt.model.*
 import mx.buap.cs.labmngmnt.repository.MateriaRepository
 import mx.buap.cs.labmngmnt.repository.UsuarioRepository
-import mx.buap.cs.labmngmnt.rest.DocumentoRestRepository
+import mx.buap.cs.labmngmnt.api.DocumentoRestRepository
 import mx.buap.cs.labmngmnt.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent

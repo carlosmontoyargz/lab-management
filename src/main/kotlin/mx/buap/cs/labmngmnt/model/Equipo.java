@@ -54,8 +54,8 @@ public class Equipo
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(columnDefinition = "BYTEA")
-    private byte[] imagen;
+    @OneToOne
+    private Imagen imagen;
 
     public int getId() {
         return id;
@@ -105,11 +105,11 @@ public class Equipo
         this.descripcion = descripcion;
     }
 
-    public byte[] getImagen() {
+    public Imagen getImagen() {
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
+    public void setImagen(Imagen imagen) {
         this.imagen = imagen;
     }
 

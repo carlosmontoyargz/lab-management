@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.rest
+package mx.buap.cs.labmngmnt.api
 
 import mx.buap.cs.labmngmnt.error.SignUpException
 import mx.buap.cs.labmngmnt.model.Usuario

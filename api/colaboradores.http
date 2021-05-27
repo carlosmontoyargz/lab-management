@@ -100,12 +100,12 @@ Content-Disposition: form-data; name="multipartFile"; filename="documento.docx"
 
 ###
 
-GET localhost:8080/documentoLobs/2
+GET localhost:8080/archivos/2
 Authorization: Bearer {{auth_token}}
 
 ###
 
-GET localhost:8080/documentoLobs/3
+GET localhost:8080/archivos/3
 Authorization: Bearer {{auth_token}}
 
 ###
