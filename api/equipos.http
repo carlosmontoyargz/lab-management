@@ -1,0 +1,87 @@
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+  "username": "carlos.montoya@profesor.buap.mx",
+  "password": "admin"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###
+
+GET localhost:8080/api/laboratorios
+Authorization: Bearer {{auth_token}}
+
+> {% client.global.set("laboratorio", response.body._embedded.laboratorios[0]._links.self.href); %}
+
+###
+
+GET {{laboratorio}}
+Authorization: Bearer {{auth_token}}
+
+> {% client.global.set("equipos_del_laboratorio", response.body._links.equipos.href); %}
+
+###
+
+GET {{equipos_del_laboratorio}}
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET localhost:8080/api/equipos
+Authorization: Bearer {{auth_token}}
+
+###
+
+POST localhost:8080/api/equipos
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "serial": "EEWR-V34",
+  "numeroInventario": "2",
+  "marca": "Apple",
+  "descripcion": "Equipo 2",
+  "laboratorio": "{{laboratorio}}"
+}
+
+> {% client.global.set("equipo_creado", response.headers.valueOf("location")); %}
+
+###
+
+GET {{equipo_creado}}
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET {{equipo_creado}}/laboratorio
+Authorization: Bearer {{auth_token}}
+
+###
+
+PUT {{equipo_creado}}/laboratorio
+Authorization: Bearer {{auth_token}}
+Content-Type: text/uri-list
+
+{{laboratorio}}
+
+###
+
+GET http://localhost:8080/api/equipos/1/laboratorio
+Authorization: Bearer {{auth_token}}
+
+###
+
+PUT http://localhost:8080/api/equipos/1/imagen
+Authorization: Bearer {{auth_token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="multipartFile"; filename="image.jpg"
+
+< files/image.jpg
+--WebAppBoundary--
+
+###
+

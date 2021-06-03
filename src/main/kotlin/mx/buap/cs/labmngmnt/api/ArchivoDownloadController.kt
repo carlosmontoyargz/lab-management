@@ -24,45 +24,51 @@
 
 package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.error.UsuarioNoEncontradoException
-import mx.buap.cs.labmngmnt.model.Documento
 import mx.buap.cs.labmngmnt.service.DocumentoService
+import mx.buap.cs.labmngmnt.service.ImagenService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.rest.webmvc.RepositoryRestController
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.core.io.Resource
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
-import java.net.URI
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 /**
  * @author Carlos Montoya
  * @since 1.0
  */
-@RepositoryRestController
-class DocumentoUploadController
+@RestController
+class ArchivoDownloadController
     @Autowired constructor(
-        val colaboradorRepository: ColaboradorRestRepository,
-        val documentoService: DocumentoService)
+        val documentoService: DocumentoService,
+        val imagenService: ImagenService)
 {
-    @PostMapping("/colaboradores/{colaboradorId}/documentos")
-    fun subirDocumento(
-        @PathVariable colaboradorId: Int,
-        @RequestParam multipartFile: MultipartFile):
-            ResponseEntity<String>
+    @GetMapping("/archivos/{documentoId}"/*, produces = [MediaType.ALL_VALUE]*/)
+    fun descargarDocumento(@PathVariable documentoId: Int):
+            ResponseEntity<Resource>
     {
-        val colaboradorDb = colaboradorRepository
-            .findById(colaboradorId)
-            .orElseThrow { UsuarioNoEncontradoException(colaboradorId) }
-
-        val documento = documentoService.guardar(
-            documento = Documento().apply {
-                nombre = multipartFile.originalFilename
-                colaborador = colaboradorDb
-            },
-            bytes = multipartFile.bytes)
-
+        val documentoLob = documentoService.encontrarLob(documentoId)
         return ResponseEntity
-            .created(URI.create("/documentos/${documento.id}")) //TODO url del recurso creado
-            .build()
+            .ok()
+            .header(
+                HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=" +
+                        "\"${documentoLob.documento.nombre}\"")
+            .body(ByteArrayResource(documentoLob.contenido))
+    }
+
+    @GetMapping("/imagenes/{imagenId}", produces = [MediaType.IMAGE_JPEG_VALUE])
+    fun descargarImagen(@PathVariable imagenId: UUID):
+            ResponseEntity<Resource>
+    {
+        val imagenLob = imagenService.encontrarLob(imagenId)
+        return ResponseEntity
+            .ok()
+            .body(ByteArrayResource(imagenLob.contenido))
     }
 }

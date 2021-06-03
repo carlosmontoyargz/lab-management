@@ -51,5 +51,30 @@ public class Imagen
     private String nombre;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime creacion;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public LocalDateTime getCreacion() {
+        return creacion;
+    }
+
+    public void setCreacion(LocalDateTime creacion) {
+        this.creacion = creacion;
+    }
 }

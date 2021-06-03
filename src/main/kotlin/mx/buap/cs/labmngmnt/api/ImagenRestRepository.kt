@@ -24,12 +24,8 @@
 
 package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.model.Colaborador
+import mx.buap.cs.labmngmnt.model.Imagen
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import java.util.*
 
-@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
-interface ColaboradorRestRepository: JpaRepository<Colaborador, Int>
-{
-
-}
+interface ImagenRestRepository: JpaRepository<Imagen, UUID>

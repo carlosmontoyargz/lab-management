@@ -24,6 +24,8 @@
 
 package mx.buap.cs.labmngmnt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 /**
@@ -42,7 +44,7 @@ public class Equipo
     @Column(length = 50, unique = true)
     private String serial;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "laboratorio_id")
     private Laboratorio laboratorio;
 

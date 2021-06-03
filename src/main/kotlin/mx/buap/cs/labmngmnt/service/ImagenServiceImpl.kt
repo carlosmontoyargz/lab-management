@@ -22,7 +22,37 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.error
+package mx.buap.cs.labmngmnt.service
 
-class DocumentoNoEncontradoException(id: Int):
-        RuntimeException("No se ha encontrado documento $id")
+import mx.buap.cs.labmngmnt.api.ImagenRestRepository
+import mx.buap.cs.labmngmnt.error.ArchivoNoEncontradoException
+import mx.buap.cs.labmngmnt.model.Imagen
+import mx.buap.cs.labmngmnt.model.ImagenLob
+import mx.buap.cs.labmngmnt.repository.ImagenLobRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import java.util.*
+
+@Service
+class ImagenServiceImpl
+    @Autowired constructor(
+        val imagenRepository: ImagenRestRepository,
+        val imagenLobRepository: ImagenLobRepository)
+    : ImagenService
+{
+    override fun guardar(imagen: Imagen, bytes: ByteArray): Imagen {
+        val imagenDb = imagenRepository.save(imagen)
+        imagenLobRepository.save(
+            ImagenLob().apply {
+                this.imagen = imagenDb
+                this.contenido = bytes
+            }
+        )
+        return imagenDb;
+    }
+
+    override fun encontrarLob(imagenId: UUID): ImagenLob =
+        imagenLobRepository
+            .findById(imagenId)
+            .orElseThrow { ArchivoNoEncontradoException(0) } //FIXME
+}

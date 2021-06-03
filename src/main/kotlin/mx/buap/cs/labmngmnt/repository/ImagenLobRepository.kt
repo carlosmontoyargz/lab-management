@@ -22,14 +22,12 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.api
+package mx.buap.cs.labmngmnt.repository
 
-import mx.buap.cs.labmngmnt.model.Colaborador
-import org.springframework.data.jpa.repository.JpaRepository
+import mx.buap.cs.labmngmnt.model.ImagenLob
+import org.springframework.data.repository.CrudRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import java.util.*
 
-@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
-interface ColaboradorRestRepository: JpaRepository<Colaborador, Int>
-{
-
-}
+@RepositoryRestResource(exported = false)
+interface ImagenLobRepository: CrudRepository<ImagenLob, UUID>

@@ -69,6 +69,13 @@ public class Colaborador extends Usuario
         tiempoPrestado.incrementar(tiempo);
     }
 
+    public void asignarTiempoPrestado(Duration tiempo) {
+        if (tiempoPrestado == null)
+            setTiempoPrestado(new TiempoPrestado());
+        tiempoPrestado.setHoras(tiempo.toHours());
+        tiempoPrestado.setMinutos(tiempo.toMinutesPart());
+    }
+
     public List<Documento> getDocumentos() {
         return documentos;
     }

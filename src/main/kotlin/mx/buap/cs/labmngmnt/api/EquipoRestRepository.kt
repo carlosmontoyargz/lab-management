@@ -22,11 +22,11 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.repository
+package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.model.Materia
-import org.springframework.data.repository.CrudRepository
+import mx.buap.cs.labmngmnt.model.Equipo
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(exported = false)
-interface MateriaRepository : CrudRepository<Materia, Int>
+@RepositoryRestResource(path = "equipos", collectionResourceRel = "equipos")
+interface EquipoRestRepository: JpaRepository<Equipo, Int>

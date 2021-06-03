@@ -42,7 +42,7 @@ public class TiempoPrestado
     @MapsId
     private Colaborador colaborador;
 
-    private int horas = 0;
+    private long horas = 0;
     private int minutos = 0;
 
     public void incrementar(Duration tiempo) {
@@ -70,11 +70,19 @@ public class TiempoPrestado
         this.colaborador = colaborador;
     }
 
-    public int getHoras() {
+    public long getHoras() {
         return horas;
     }
 
     public int getMinutos() {
         return minutos;
+    }
+
+    public void setHoras(long horas) {
+        this.horas = horas;
+    }
+
+    public void setMinutos(int minutos) {
+        this.minutos = minutos;
     }
 }

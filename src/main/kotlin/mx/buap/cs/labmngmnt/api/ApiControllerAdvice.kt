@@ -24,7 +24,7 @@
 
 package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.error.DocumentoNoEncontradoException
+import mx.buap.cs.labmngmnt.error.ArchivoNoEncontradoException
 import mx.buap.cs.labmngmnt.error.SignUpException
 import mx.buap.cs.labmngmnt.error.UsuarioNoEncontradoException
 import mx.buap.cs.labmngmnt.api.dto.ErrorResponse
@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
+import javax.persistence.PersistenceException
 
 /**
  *
@@ -55,11 +56,16 @@ class ApiControllerAdvice
     fun signUpHandler(ex: SignUpException) = defaultResponse(ex)
 
     @ResponseBody
+    @ExceptionHandler(PersistenceException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun persistanceExceptionHandler(ex: Exception) = defaultResponse(ex)
+
+    @ResponseBody
     @ExceptionHandler(
         UsuarioNoEncontradoException::class,
-        DocumentoNoEncontradoException::class)
+        ArchivoNoEncontradoException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun userNotFoundHandler(ex: Exception) = defaultResponse(ex)
+    fun entityNotFoundHandler(ex: Exception) = defaultResponse(ex)
 
     private fun defaultResponse(ex: Exception) =
         ErrorResponse(

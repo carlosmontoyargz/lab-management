@@ -24,12 +24,10 @@
 
 package mx.buap.cs.labmngmnt.api
 
-import mx.buap.cs.labmngmnt.model.Colaborador
+import mx.buap.cs.labmngmnt.model.Laboratorio
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
-interface ColaboradorRestRepository: JpaRepository<Colaborador, Int>
-{
-
-}
+@RepositoryRestResource(
+    path = "laboratorios", collectionResourceRel = "laboratorios")
+interface LaboratorioRestRepository: JpaRepository<Laboratorio, Int>

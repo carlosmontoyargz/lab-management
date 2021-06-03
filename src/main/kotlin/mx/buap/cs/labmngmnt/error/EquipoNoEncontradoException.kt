@@ -22,14 +22,8 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.api
+package mx.buap.cs.labmngmnt.error
 
-import mx.buap.cs.labmngmnt.model.Colaborador
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
+class EquipoNoEncontradoException(var equipoId: Int):
+        RuntimeException("Equipo $equipoId no encontrado")
 
-@RepositoryRestResource(path = "colaboradores", collectionResourceRel = "colaboradores")
-interface ColaboradorRestRepository: JpaRepository<Colaborador, Int>
-{
-
-}

@@ -25,6 +25,8 @@
 package mx.buap.cs.labmngmnt.model;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Carlos Montoya
@@ -47,6 +49,22 @@ public class Laboratorio
 
     @Column(length = 20)
     private String salon;
+
+    @OneToMany(
+            mappedBy = "laboratorio",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Equipo> equipos = new LinkedList<>();
+
+    public void agregarEquipo(Equipo equipo) {
+        equipos.add(equipo);
+        equipo.setLaboratorio(this);
+    }
+
+    public void borrarEquipo(Equipo equipo) {
+        equipos.remove(equipo);
+        equipo.setLaboratorio(null);
+    }
 
     public int getId() {
         return id;
@@ -78,6 +96,14 @@ public class Laboratorio
 
     public void setSalon(String salon) {
         this.salon = salon;
+    }
+
+    public List<Equipo> getEquipos() {
+        return equipos;
+    }
+
+    public void setEquipos(List<Equipo> equipos) {
+        this.equipos = equipos;
     }
 
     @Override
