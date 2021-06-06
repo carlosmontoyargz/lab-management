@@ -24,29 +24,26 @@
 
 package mx.buap.cs.labmngmnt.api.handler
 
-import mx.buap.cs.labmngmnt.error.SignUpException
-import mx.buap.cs.labmngmnt.model.Usuario
-import mx.buap.cs.labmngmnt.service.UsuarioService
+import mx.buap.cs.labmngmnt.api.SolicitudesRestRepository
+import mx.buap.cs.labmngmnt.model.EstadoSolicitud
+import mx.buap.cs.labmngmnt.model.Solicitud
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.rest.core.annotation.HandleBeforeCreate
-import org.springframework.data.rest.core.annotation.HandleBeforeSave
+import org.springframework.data.rest.core.annotation.HandleAfterCreate
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler
 import org.springframework.stereotype.Component
-import kotlin.jvm.Throws
+import java.util.*
 
 @Component
-@RepositoryEventHandler(Usuario::class)
-class UsuarioRestEventHandler
-    @Autowired constructor(val usuarioService: UsuarioService)
+@RepositoryEventHandler(Solicitud::class)
+class SolicitudEventHandler
+    @Autowired constructor(
+        val solicitudesRepository: SolicitudesRestRepository)
 {
-    @HandleBeforeCreate
-    @Throws(SignUpException::class)
-    fun handleBeforeCreate(usuario: Usuario) {
-        usuarioService.preregistrar(usuario)
-    }
-
-    @HandleBeforeSave
-    fun hanldeBeforeSave(usuario: Usuario) {
-        usuarioService.encodePassword(usuario)
+    @HandleAfterCreate
+    fun afterCreate(solicitud: Solicitud) {
+        solicitud.folio = UUID.randomUUID().toString()
+        if (solicitud.estado == null)
+            solicitud.estado = EstadoSolicitud.REPORTADO
+        solicitudesRepository.save(solicitud)
     }
 }

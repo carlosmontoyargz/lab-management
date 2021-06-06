@@ -1,0 +1,24 @@
+POST http://localhost:8080/autenticar
+Content-Type: application/json
+
+{
+  "username": "carlos.montoya@profesor.buap.mx",
+  "password": "admin"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###
+
+POST localhost:8080/api/solicitudes
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "tipoSolicitud": "REPARACION",
+
+  "descripcion": "Reparacion del equipo 5",
+  "costo": 100.00
+}
+
+> {% client.global.set("solicitudSimple", response.body._links.self.href); %}

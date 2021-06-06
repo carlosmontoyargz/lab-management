@@ -67,8 +67,7 @@ public class Solicitud
                     referencedColumnName = "entrada_id"),
             @JoinColumn(
                     name = "numero_incidente",
-                    referencedColumnName = "numero_incidente")
-    })
+                    referencedColumnName = "numero_incidente")})
     private Incidente incidente;
 
     @ManyToOne(fetch = FetchType.LAZY)
