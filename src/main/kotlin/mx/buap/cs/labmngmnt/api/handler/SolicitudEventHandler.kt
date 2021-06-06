@@ -41,7 +41,7 @@ class SolicitudEventHandler
 {
     @HandleAfterCreate
     fun afterCreate(solicitud: Solicitud) {
-        solicitud.folio = UUID.randomUUID().toString()
+        solicitud.folio = solicitud.id.toString()
         if (solicitud.estado == null)
             solicitud.estado = EstadoSolicitud.REPORTADO
         solicitudesRepository.save(solicitud)
