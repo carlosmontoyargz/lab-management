@@ -66,14 +66,20 @@ public class Colaborador extends Usuario
     }
 
     public void incrementarTiempoPrestado(Duration tiempo) {
+        if (tiempoPrestado == null)
+            setTiempoPrestado(new TiempoPrestado());
         tiempoPrestado.incrementar(tiempo);
+    }
+
+    public void reducirTiempoPrestado(Duration tiempo) {
+        if (tiempoPrestado != null)
+            tiempoPrestado.reducir(tiempo);
     }
 
     public void asignarTiempoPrestado(Duration tiempo) {
         if (tiempoPrestado == null)
             setTiempoPrestado(new TiempoPrestado());
-        tiempoPrestado.setHoras(tiempo.toHours());
-        tiempoPrestado.setMinutos(tiempo.toMinutesPart());
+        tiempoPrestado.setFromDuration(tiempo);
     }
 
     public List<Documento> getDocumentos() {

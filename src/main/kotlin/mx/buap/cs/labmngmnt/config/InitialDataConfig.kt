@@ -108,7 +108,7 @@ class InitialDataConfig
             inicioServicio = LocalDate.now().minusMonths(4)
             conclusionServicio = LocalDate.now()
             tiempoPrestado = TiempoPrestado().apply {
-                incrementar(Duration.ofHours(122).plusMinutes(43))
+                incrementar(Duration.ofHours(0).plusMinutes(0))
             }
         })
     )

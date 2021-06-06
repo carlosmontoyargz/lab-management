@@ -28,7 +28,5 @@ import mx.buap.cs.labmngmnt.model.EntradaBitacora
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource
+@RepositoryRestResource(path = "entradas", collectionResourceRel = "entradas")
 interface BitacoraRestRepository : PagingAndSortingRepository<EntradaBitacora, Int>
-{
-}

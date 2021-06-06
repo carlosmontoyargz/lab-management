@@ -46,12 +46,27 @@ public class TiempoPrestado
     private int minutos = 0;
 
     public void incrementar(Duration tiempo) {
-        horas += tiempo.toHours();
-        minutos += tiempo.toMinutesPart();
+        setFromDuration(toDuration().plus(tiempo));
+
+    }
+
+    public void reducir(Duration tiempo) {
+        setFromDuration(toDuration().minus(tiempo));
+    }
+
+    public void setFromDuration(Duration d) {
+        horas = d.toHours();
+        minutos = d.toMinutesPart();
     }
 
     public Duration toDuration() {
-        return Duration.ofHours(horas).plusMinutes(minutos);
+        return Duration
+                .ofHours(horas)
+                .plusMinutes(minutos);
+    }
+
+    public String toString() {
+        return horas + " H " + minutos + "M";
     }
 
     public int getId() {

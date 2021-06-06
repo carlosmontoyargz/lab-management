@@ -22,4 +22,7 @@ spring:
       base-path: api
 server:
   port: 8080
+logging:
+  level:
+    : TRACE
 jwt.secret: "StrawberryFieldsForever"

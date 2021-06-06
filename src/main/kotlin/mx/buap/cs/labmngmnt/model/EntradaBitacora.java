@@ -30,6 +30,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.*;
 
 /**
  * @author Carlos Montoya
@@ -63,12 +66,13 @@ public class EntradaBitacora
     @OneToMany(
             mappedBy = "entrada",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+            orphanRemoval = true)
     private final List<Incidente> incidentes = new LinkedList<>();
 
     public Duration getDuracion() {
-        return Duration.between(horaEntrada, horaSalida);
+        return Duration.between(
+                requireNonNull(horaEntrada),
+                requireNonNull(horaSalida));
     }
 
     public void agregarIncidente(Incidente incidente) {

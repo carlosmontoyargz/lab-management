@@ -10,12 +10,78 @@ Content-Type: application/json
 
 ###
 
-GET localhost:8080/api/materias
+GET localhost:8080/api/colaboradores/1
 Authorization: Bearer {{auth_token}}
+
+> {% client.global.set("colaborador", response.body._links.self.href); %}
+
+###
+
+GET localhost:8080/api/profesores/2
+Authorization: Bearer {{auth_token}}
+
+> {% client.global.set("profesor", response.body._links.self.href); %}
 
 ###
 
 GET localhost:8080/api/materias/1
+Authorization: Bearer {{auth_token}}
+
+
+> {% client.global.set("materia", response.body._links.self.href); %}
+
+###
+
+
+POST localhost:8080/api/entradas
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "fecha": "2021-06-05",
+  "horaEntrada": "16:00:00",
+  "horaSalida": "18:30:00",
+  "colaborador": "{{colaborador}}"
+}
+
+> {% client.global.set("entradaSimple", response.headers.valueOf("Location")); %}
+
+###
+
+POST localhost:8080/api/entradas
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "fecha": "2021-03-02",
+  "horaEntrada": "09:00:00",
+  "horaSalida": "11:35:00",
+  "colaborador": "{{colaborador}}",
+  "profesor": "{{profesor}}",
+  "materia": "{{materia}}"
+}
+
+> {% client.global.set("entradaCompleta", response.headers.valueOf("Location")); %}
+
+###
+
+PATCH {{entradaSimple}}
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "horaEntrada": "15:00:00",
+  "horaSalida": "18:45:00"
+}
+
+###
+
+GET localhost:8080/api/entradas
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET localhost:8080/api/materias
 Authorization: Bearer {{auth_token}}
 
 ###
