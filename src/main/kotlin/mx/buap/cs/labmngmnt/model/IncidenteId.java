@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Embeddable
-public class InicidenteId implements Serializable
+public class IncidenteId implements Serializable
 {
     @Column(name = "entrada_id")
     private int entradaId;
@@ -41,10 +41,10 @@ public class InicidenteId implements Serializable
     @Column(name = "numero_incidente")
     private int numeroIncidente;
 
-    public InicidenteId() {
+    public IncidenteId() {
     }
 
-    public InicidenteId(int entradaId, int numeroIncidente) {
+    public IncidenteId(int entradaId, int numeroIncidente) {
         this.entradaId = entradaId;
         this.numeroIncidente = numeroIncidente;
     }
@@ -68,9 +68,9 @@ public class InicidenteId implements Serializable
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof InicidenteId)) return false;
+        if (!(o instanceof IncidenteId)) return false;
 
-        InicidenteId that = (InicidenteId) o;
+        IncidenteId that = (IncidenteId) o;
 
         if (entradaId != that.entradaId) return false;
         return numeroIncidente == that.numeroIncidente;
@@ -81,5 +81,10 @@ public class InicidenteId implements Serializable
         int result = entradaId;
         result = 31 * result + numeroIncidente;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return entradaId + "_" + numeroIncidente;
     }
 }

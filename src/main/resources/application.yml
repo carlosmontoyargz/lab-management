@@ -24,5 +24,11 @@ server:
   port: 8080
 logging:
   level:
-    : TRACE
+    mx:
+      buap:
+        cs:
+          labmngmnt:
+            api:
+              handler:
+                BitacoraEventHandler: TRACE
 jwt.secret: "StrawberryFieldsForever"

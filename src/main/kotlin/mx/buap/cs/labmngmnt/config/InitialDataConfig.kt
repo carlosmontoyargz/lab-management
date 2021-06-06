@@ -24,9 +24,7 @@
 
 package mx.buap.cs.labmngmnt.config
 
-import mx.buap.cs.labmngmnt.api.EquipoRestRepository
-import mx.buap.cs.labmngmnt.api.LaboratorioRestRepository
-import mx.buap.cs.labmngmnt.api.MateriaRestRepository
+import mx.buap.cs.labmngmnt.api.*
 import mx.buap.cs.labmngmnt.model.*
 import mx.buap.cs.labmngmnt.repository.UsuarioRepository
 import mx.buap.cs.labmngmnt.service.DocumentoService
@@ -41,6 +39,7 @@ import java.nio.file.Paths
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Configuration
 class InitialDataConfig
@@ -50,7 +49,9 @@ class InitialDataConfig
         val documentoService: DocumentoService,
         val laboratorioRepository: LaboratorioRestRepository,
         val equipoRepository: EquipoRestRepository,
-        val materiaRepository: MateriaRestRepository)
+        val materiaRepository: MateriaRestRepository,
+        val bitacoraRestRepository: BitacoraRestRepository,
+        val incidenteRepository: IncidenteRestRepository)
 {
     private val log = LogManager.getLogger(InitialDataConfig::class.java)
 
@@ -62,8 +63,34 @@ class InitialDataConfig
         val profesor = profesor()
         val documento = documento(colaborador)
         val laboratorio = laboratorio()
+        val equipo = equipo(laboratorio)
+        val materia = materia()
 
-        equipoRepository.save(Equipo().apply {
+        val entradaBitacora = bitacoraRestRepository.save(
+            EntradaBitacora().apply {
+                fecha = LocalDate.now()
+                horaEntrada = LocalTime.now()
+                horaSalida = LocalTime.now()
+                this.colaborador = colaborador as Colaborador?
+            })
+
+        val incidente = incidenteRepository.save(
+            Incidente().apply {
+                id = IncidenteId().apply {
+                    entradaId = entradaBitacora.id
+                    numeroIncidente = 1
+                }
+                descripcion = "Incidente de prueba"
+            })
+    }
+
+    private fun materia() = materiaRepository.save(Materia().apply {
+        clave = "ICC002"
+        nombre = "Bases de Datos"
+    })
+
+    private fun equipo(laboratorio: Laboratorio) = equipoRepository
+        .save(Equipo().apply {
             serial = "23CC-VRR"
             marca = "Lenovo"
             descripcion = "Equipo 10"
@@ -71,25 +98,20 @@ class InitialDataConfig
             this.laboratorio = laboratorio
         })
 
-        materiaRepository.save(Materia().apply {
-            clave = "ICC002"
-            nombre = "Bases de Datos"
-        })
-    }
-
-    private fun profesor(): Usuario = usuarioRepository.save(
-        usuarioService.preregistrar(Profesor().apply {
-            nombre = "Carlos"
-            apellidoPaterno = "Montoya"
-            apellidoMaterno = "Rodriguez"
-            matricula = "201325916"
-            correo = "carlos.montoya@profesor.buap.mx"
-            password = "admin"
-            creado = LocalDateTime.now()
-            telefono = "2125295121"
-            isActivo = true
-            isResponsable = true
-        })
+    private fun profesor(): Usuario = usuarioRepository
+        .save(usuarioService.preregistrar(
+            Profesor().apply {
+                nombre = "Carlos"
+                apellidoPaterno = "Montoya"
+                apellidoMaterno = "Rodriguez"
+                matricula = "201325916"
+                correo = "carlos.montoya@profesor.buap.mx"
+                password = "admin"
+                creado = LocalDateTime.now()
+                telefono = "2125295121"
+                isActivo = true
+                isResponsable = true
+            })
     )
 
     private fun colaborador(): Usuario = usuarioRepository.save(

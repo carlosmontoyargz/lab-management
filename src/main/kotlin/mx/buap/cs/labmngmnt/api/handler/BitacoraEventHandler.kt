@@ -70,18 +70,18 @@ class BitacoraEventHandler
     private fun corregirTiempoColaborador(
         existente: EntradaBitacora, nueva: EntradaBitacora)
     {
-        log.info("Inicia correccion de tiempo prestado para colaborador {}", existente.colaborador.id)
+        log.trace("Inicia correccion de tiempo prestado para colaborador {}", existente.colaborador.id)
 
         val tiempoPrestado = existente.colaborador.tiempoPrestado
-        log.info("Tiempo anterior: {}", tiempoPrestado)
+        log.trace("Tiempo anterior: {}", tiempoPrestado)
 
         tiempoPrestado.reducir(existente.duracion)
-        log.info("Tiempo reducido: {}", tiempoPrestado)
+        log.trace("Tiempo reducido: {}", tiempoPrestado)
 
         tiempoPrestado.incrementar(nueva.duracion)
-        log.info("Tiempo actualizado: {}", tiempoPrestado)
+        log.trace("Tiempo actualizado: {}", tiempoPrestado)
 
         colaboradorRepository.save(existente.colaborador)
-        log.info("Tiempo de colaborador actualizado")
+        log.trace("Tiempo de colaborador actualizado")
     }
 }

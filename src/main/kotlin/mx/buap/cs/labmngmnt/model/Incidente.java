@@ -24,6 +24,8 @@
 
 package mx.buap.cs.labmngmnt.model;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,12 +36,13 @@ import java.util.Objects;
  * @since 1.0
  */
 @Entity
+@RestResource
 public class Incidente
 {
     @EmbeddedId
-    private InicidenteId id;
+    private IncidenteId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "entrada_id",insertable = false, updatable = false)
     private EntradaBitacora entrada;
 
@@ -48,8 +51,7 @@ public class Incidente
 
     @OneToMany(
             mappedBy = "incidente",
-            cascade = CascadeType.ALL
-    )
+            cascade = CascadeType.ALL)
     private final List<Solicitud> solicitudes = new LinkedList<>();
 
     public void agregarSolicitud(Solicitud solicitud) {
@@ -62,11 +64,11 @@ public class Incidente
         solicitud.setIncidente(null);
     }
 
-    public InicidenteId getId() {
+    public IncidenteId getId() {
         return id;
     }
 
-    public void setId(InicidenteId id) {
+    public void setId(IncidenteId id) {
         this.id = id;
     }
 
@@ -75,6 +77,7 @@ public class Incidente
     }
 
     public void setEntrada(EntradaBitacora entrada) {
+        this.id.setEntradaId(entrada.getId());
         this.entrada = entrada;
     }
 

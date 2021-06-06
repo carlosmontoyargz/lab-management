@@ -81,6 +81,16 @@ Authorization: Bearer {{auth_token}}
 
 ###
 
+GET http://localhost:8080/api/entradas/1/incidentes
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET http://localhost:8080/api/incidentes/1_1
+Authorization: Bearer {{auth_token}}
+
+###
+
 GET localhost:8080/api/materias
 Authorization: Bearer {{auth_token}}
 
