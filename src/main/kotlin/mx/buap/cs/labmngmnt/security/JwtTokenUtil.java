@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import lombok.RequiredArgsConstructor;
 import mx.buap.cs.labmngmnt.config.LabManagementProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,13 +39,17 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class JwtTokenUtil implements Serializable
 {
     private static final long serialVersionUID = -2550185165626007488L;
     public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60;
 
     private final LabManagementProperties properties;
+
+    @Autowired
+    public JwtTokenUtil(LabManagementProperties properties) {
+        this.properties = properties;
+    }
 
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {
