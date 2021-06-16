@@ -73,3 +73,16 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# compiled output
+/dist-server
+
+# dependencies
+package-lock.json
+
+# IDEs and editors
+/.idea
+
+# e2e
+/e2e/*.js
+/e2e/*.map
