@@ -21,24 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package mx.buap.cs.labmngmnt.api.tool;
-
-import mx.buap.cs.labmngmnt.model.IncidenteId;
-import org.springframework.core.convert.converter.Converter;
-
-/**
- * @author Carlos Montoya
- * @since 1.0
- */
-public class IncidenteIdConverter implements Converter<String, IncidenteId>
-{
-    @Override
-    public IncidenteId convert(String source) {
-        // TODO mover logica a entidad de Incidente
-        String[] parts = source.split("_");
-        return new IncidenteId(
-                Integer.parseInt(parts[0]),
-                Integer.parseInt(parts[1]));
-    }
-}
+// import { Injectable } from '@angular/core';
+// import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+// import { Observable } from 'rxjs';
+// import {AuthenticationService} from './authentication.service';
+//
+//
+// @Injectable()
+// export class JwtInterceptor implements HttpInterceptor {
+//   constructor(private authenticationService: AuthenticationService) {}
+//
+//   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+//     // add authorization header with jwt token if available
+//     const currentUser = this.authenticationService.currentUserValue;
+//     if (currentUser && currentUser.token) {
+//       request = request.clone({
+//         setHeaders: {
+//           Authorization: `Bearer ${currentUser.token}`
+//         }
+//       });
+//     }
+//
+//     return next.handle(request);
+//   }
+// }

@@ -22,23 +22,22 @@
  * THE SOFTWARE.
  */
 
-package mx.buap.cs.labmngmnt.api.tool;
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
+import {environment} from '../../environments/environment';
 
-import mx.buap.cs.labmngmnt.model.IncidenteId;
-import org.springframework.core.convert.converter.Converter;
+@Injectable({
+    providedIn: 'root'
+})
+export class LaboratorioService {
+    constructor(private http: HttpClient) {}
 
-/**
- * @author Carlos Montoya
- * @since 1.0
- */
-public class IncidenteIdConverter implements Converter<String, IncidenteId>
-{
-    @Override
-    public IncidenteId convert(String source) {
-        // TODO mover logica a entidad de Incidente
-        String[] parts = source.split("_");
-        return new IncidenteId(
-                Integer.parseInt(parts[0]),
-                Integer.parseInt(parts[1]));
+    getLaboratorio() {
+        return this.http
+            .get(environment.apiUrl + '/laboratorios')
+            .pipe(map<any, any>(r => {
+                return r._embedded.laboratorios[0];
+            }));
     }
 }

@@ -114,3 +114,22 @@ Content-Type: application/json
   "clave": "MD0012",
   "nombre": "Mineria de Datos"
 }
+
+###
+
+GET localhost:8080/api
+
+> {%
+client.global.set("laboratorios_endpoint", response.body._links.laboratorios.href);
+lab_end = client.global.get('laboratorios_endpoint')
+lab_end = lab_end.substring(0, lab_end.search('{'))
+client.global.set("laboratorios_endpoint", lab_end);
+%}
+
+###
+
+GET {{laboratorios_endpoint}}
+
+###
+
+GET localhost:8080/api/laboratorios

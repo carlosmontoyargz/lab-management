@@ -27,7 +27,8 @@ package mx.buap.cs.labmngmnt.api
 import mx.buap.cs.labmngmnt.model.Laboratorio
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import org.springframework.web.bind.annotation.CrossOrigin
 
-@RepositoryRestResource(
-    path = "laboratorios", collectionResourceRel = "laboratorios")
+@CrossOrigin
+@RepositoryRestResource(path = "laboratorios", collectionResourceRel = "laboratorios")
 interface LaboratorioRestRepository: JpaRepository<Laboratorio, Int>

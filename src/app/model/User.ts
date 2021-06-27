@@ -21,24 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package mx.buap.cs.labmngmnt.api.tool;
-
-import mx.buap.cs.labmngmnt.model.IncidenteId;
-import org.springframework.core.convert.converter.Converter;
-
-/**
- * @author Carlos Montoya
- * @since 1.0
- */
-public class IncidenteIdConverter implements Converter<String, IncidenteId>
-{
-    @Override
-    public IncidenteId convert(String source) {
-        // TODO mover logica a entidad de Incidente
-        String[] parts = source.split("_");
-        return new IncidenteId(
-                Integer.parseInt(parts[0]),
-                Integer.parseInt(parts[1]));
-    }
+export class User {
+    id: number;
+    username: string;
+    password: string;
+    firstName: string;
+    creado: string;
+    lastName: string;
+    rolNombre: string;
+    token: string;
+    organizacionNombre: string;
 }
