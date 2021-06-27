@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DashboardComponent } from './dashboard.component';
+import { BitacoraComponent } from './bitacora.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent,
+    component: BitacoraComponent,
     data: {
-      title: 'Página principal'
+      title: 'Bitacora'
     }
   }
 ];
@@ -17,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DashboardRoutingModule {}
+export class BitacoraRoutingModule {}
