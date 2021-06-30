@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -33,7 +33,7 @@ import {environment} from '../../environments/environment';
 export class LaboratorioService {
     constructor(private http: HttpClient) {}
 
-    getLaboratorio() {
+    getLaboratorio(): Observable<any> {
         return this.http
             .get(environment.apiUrl + '/laboratorios')
             .pipe(map<any, any>(r => {

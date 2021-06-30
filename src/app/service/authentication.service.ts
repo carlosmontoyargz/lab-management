@@ -22,20 +22,50 @@
  * THE SOFTWARE.
  */
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
+import {Usuario} from '../model/usuario';
 
-@Injectable({providedIn: 'root'})
-export class UserService {
+@Injectable({ providedIn: 'root' })
+export class AuthenticationService {
+  private currentUserSubject: BehaviorSubject<Usuario>;
+  public currentUser: Observable<Usuario>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.currentUserSubject = new BehaviorSubject<Usuario>(
+      JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
-  getAllColaboradores() {
+  public get currentUserValue(): Usuario {
+    return this.currentUserSubject.value;
+  }
+
+  /**
+   * Guarda el token JWT en el almacenamiento local.
+   * @param username
+   * @param password
+   */
+  login(username: string, password: string) {
     return this.http
-      .get<any>(`${environment.apiUrl}/colaboradores`)
-      .pipe(map(result => {
-        return result._embedded.colaboradores;
+      .post<any>(
+        `${environment.baseUrl}/autenticar`,
+        { username, password })
+      .pipe(map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        return user;
       }));
+  }
+
+  /**
+   * Remueve al usuario del alamacenamiento local.
+   */
+  logout() {
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
   }
 }

@@ -10,6 +10,11 @@ Content-Type: application/json
 
 ###
 
+GET localhost:8080/api/colaboradores
+Authorization: Basic {{auth_token}}
+
+###
+
 GET localhost:8080/api/colaboradores/1
 Authorization: Bearer {{auth_token}}
 

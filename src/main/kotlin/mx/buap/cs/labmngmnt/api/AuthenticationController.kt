@@ -21,11 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package mx.buap.cs.labmngmnt.api
 
 import mx.buap.cs.labmngmnt.api.dto.AutenticacionRequest
-import mx.buap.cs.labmngmnt.api.dto.AutenticacionResponse
+import mx.buap.cs.labmngmnt.api.dto.UsuarioDto
 import mx.buap.cs.labmngmnt.security.JwtTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -35,6 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.userdetails.UserDetails
 import kotlin.jvm.Throws
@@ -55,20 +55,31 @@ class AuthenticationController
     @PostMapping("/autenticar")
     @Throws(AuthenticationException::class)
     fun autenticar(@RequestBody request: AutenticacionRequest):
-            ResponseEntity<AutenticacionResponse>
+            ResponseEntity<UsuarioDto>
     {
         val authentication = authManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 request.username!!, request.password!!))
 
-        return ResponseEntity.ok(
-            AutenticacionResponse(
-                token = jwtTokenUtil
-                    .generateToken(authentication.principal as UserDetails),
-                roles = authentication.authorities.stream()
-                    .map { it.authority }
-                    .toArray { arrayOfNulls(it) }
-            )
-        )
+        return ResponseEntity
+            .ok(crearUsuarioDto(authentication))
     }
+
+    private fun crearUsuarioDto(auth: Authentication) = UsuarioDto()
+        .apply {
+            token = jwtTokenUtil.generateToken(auth.principal as UserDetails)
+            roles = auth
+                .authorities.stream()
+                .map { it.authority }
+                .toArray { arrayOfNulls(it) }
+//            id = null
+//            correo = null
+//            matricula = null
+//            nombre = null
+//            apellidoPaterno = null
+//            apellidoMaterno = null
+//            telefono = null
+//            creado = null
+//            token = null
+        }
 }

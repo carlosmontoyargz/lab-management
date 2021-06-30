@@ -10,7 +10,7 @@ import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 import {IconModule, IconSetModule, IconSetService} from '@coreui/icons-angular';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-    suppressScrollX: true
+  suppressScrollX: true
 };
 
 import {AppComponent} from './app.component';
@@ -24,26 +24,29 @@ import {LoginComponent} from './views/login/login.component';
 import {RegisterComponent} from './views/register/register.component';
 
 const APP_CONTAINERS = [
-    DefaultLayoutComponent
+  DefaultLayoutComponent
 ];
 
 import {
-    AppAsideModule,
-    AppBreadcrumbModule,
-    AppHeaderModule,
-    AppFooterModule,
-    AppSidebarModule,
+  AppAsideModule,
+  AppBreadcrumbModule,
+  AppHeaderModule,
+  AppFooterModule,
+  AppSidebarModule,
 } from '@coreui/angular';
 
 // Import routing module
 import {AppRoutingModule} from './app.routing';
 
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 // Import 3rd party components
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {ChartsModule} from 'ng2-charts';
+import {ErrorInterceptor} from './helpers/error.interceptor';
+import {JwtInterceptor} from "./helpers/jwt.interceptor";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -61,24 +64,24 @@ import {ChartsModule} from 'ng2-charts';
         ChartsModule,
         IconModule,
         IconSetModule.forRoot(),
-        HttpClientModule
+        HttpClientModule,
+        ReactiveFormsModule
     ],
-    declarations: [
-        AppComponent,
-        ...APP_CONTAINERS,
-        P404Component,
-        P500Component,
-        LoginComponent,
-        RegisterComponent
-    ],
-    providers: [
-        {
-            provide: LocationStrategy,
-            useClass: HashLocationStrategy
-        },
-        IconSetService,
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    ...APP_CONTAINERS,
+    P404Component,
+    P500Component,
+    LoginComponent,
+    RegisterComponent
+  ],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    IconSetService,
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

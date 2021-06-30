@@ -21,14 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import {AuthenticationService} from '../service/authentication.service';
 
-package mx.buap.cs.labmngmnt.api.dto
+/**
+ * Intercepta solicitudes HTTP desde la aplicacion para agregar un
+ * token de autenticación JWT a la cabecera Authorization, si el
+ * usuario esta logueado.
+ */
+@Injectable()
+export class JwtInterceptor implements HttpInterceptor {
+  constructor(private authenticationService: AuthenticationService) {}
 
-open class AutenticacionResponse(
-    var token: String?,
-    var roles: Array<String>
-) {
-    companion object {
-        private const val serialVersionUID = -8091879091924046844L
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const currentUser = this.authenticationService.currentUserValue;
+    if (currentUser && currentUser.token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${currentUser.token}`
+        }
+      });
     }
+    return next.handle(request);
+  }
 }

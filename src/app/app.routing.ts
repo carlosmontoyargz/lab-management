@@ -8,6 +8,7 @@ import {P404Component} from './views/error/404.component';
 import {P500Component} from './views/error/500.component';
 import {LoginComponent} from './views/login/login.component';
 import {RegisterComponent} from './views/register/register.component';
+import {AuthGuard} from './helpers/auth.guard';
 
 export const routes: Routes = [
   {
@@ -18,48 +19,51 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
+    canActivate: [AuthGuard],
     data: {
       title: ''
     },
     children: [
-      // Registro de rutas para los modulos de la aplicacion
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
+      },
       {
         path: 'perfil',
         loadChildren: () =>
-            import('./views/perfil/perfil.module')
-                .then(m => m.PerfilModule)
+          import('./views/perfil/perfil.module')
+            .then(m => m.PerfilModule)
       },
       {
         path: 'equipos',
         loadChildren: () =>
-            import('./views/equipos/equipos.module')
-                .then(m => m.EquiposModule)
+          import('./views/equipos/equipos.module')
+            .then(m => m.EquiposModule)
       },
       {
         path: 'bitacora',
         loadChildren: () =>
-            import('./views/bitacora/bitacora.module')
-                .then(m => m.BitacoraModule)
+          import('./views/bitacora/bitacora.module')
+            .then(m => m.BitacoraModule)
       },
-     {
+      {
         path: 'solicitudes',
         loadChildren: () =>
-            import('./views/solicitudes/solicitudes.module')
-                .then(m => m.SolicitudesModule)
+          import('./views/solicitudes/solicitudes.module')
+            .then(m => m.SolicitudesModule)
       },
       {
         path: 'usuarios',
         loadChildren: () =>
-            import('./views/usuarios/usuarios.module')
-                .then(m => m.UsuariosModule)
+          import('./views/usuarios/usuarios.module')
+            .then(m => m.UsuariosModule)
       },
       {
         path: 'foro',
         loadChildren: () =>
-            import('./views/foro/foro.module')
-                .then(m => m.ForoModule)
+          import('./views/foro/foro.module')
+            .then(m => m.ForoModule)
       },
-        /**/
       {
         path: 'base',
         loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)
@@ -71,10 +75,6 @@ export const routes: Routes = [
       {
         path: 'charts',
         loadChildren: () => import('./views/chartjs/chartjs.module').then(m => m.ChartJSModule)
-      },
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
         path: 'icons',
@@ -98,28 +98,28 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     data: {
-      title: 'Login Page'
+      title: 'Inicio de sesión'
     }
   },
   {
     path: 'register',
     component: RegisterComponent,
     data: {
-      title: 'Register Page'
+      title: 'Registro'
     }
   },
   {
     path: '404',
     component: P404Component,
     data: {
-      title: 'Page 404'
+      title: '404'
     }
   },
   {
     path: '500',
     component: P500Component,
     data: {
-      title: 'Page 500'
+      title: '500'
     }
   },
   {path: '**', component: P404Component}

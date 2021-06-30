@@ -21,14 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-export class User {
-    id: number;
-    username: string;
-    password: string;
-    firstName: string;
-    creado: string;
-    lastName: string;
-    rolNombre: string;
-    token: string;
-    organizacionNombre: string;
+import { Injectable } from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Observable } from 'rxjs';
+import {AuthenticationService} from '../service/authentication.service';
+
+/**
+ * Creado con ng g guard
+ */
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService
+  ) { }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
+      Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    const currentUser = this.authenticationService.currentUserValue;
+    // return true;
+    if (currentUser) {
+      return true; // Si esta logueado puede acceder
+    }
+    // No logueado, redirige a la pagina de login, con la url de retorno
+    this.router
+      .navigate(
+        ['/login'],
+        { queryParams: { returnUrl: state.url } })
+      .then(r => r);
+     return false;
+  }
 }
