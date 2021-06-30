@@ -85,20 +85,20 @@ class WebSecurityConfig
     override fun configure(httpSecurity: HttpSecurity?) {
         httpSecurity!!
             .csrf().disable()
-//            .antMatcher("/api/**")
-//            .authorizeRequests()
-//            .anyRequest().authenticated()
-//            .and()
-//            // Add a filter to validate the tokens with every request
-//            .addFilterBefore(
-//                jwtRequestFilter,
-//                UsernamePasswordAuthenticationFilter::class.java)
-//            .exceptionHandling()
-//            .authenticationEntryPoint(authEntryPoint)
-//            .and()
-//            .sessionManagement() // stateless session
-//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            .and()
+            .antMatcher("/api/**")
+            .authorizeRequests()
+            .anyRequest().authenticated()
+            .and()
+            // Add a filter to validate the tokens with every request
+            .addFilterBefore(
+                jwtRequestFilter,
+                UsernamePasswordAuthenticationFilter::class.java)
+            .exceptionHandling()
+            .authenticationEntryPoint(authEntryPoint)
+            .and()
+            .sessionManagement() // stateless session
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             .cors()
     }
 }

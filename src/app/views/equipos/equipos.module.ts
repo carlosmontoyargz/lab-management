@@ -7,13 +7,15 @@ import { EquiposComponent } from './equipos.component';
 
 // Components Routing
 import { EquiposRoutingModule } from './equipos-routing.module';
+import {PaginationModule} from "ngx-bootstrap/pagination";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    EquiposRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        EquiposRoutingModule,
+        PaginationModule
+    ],
   declarations: [
     EquiposComponent,
   ]
