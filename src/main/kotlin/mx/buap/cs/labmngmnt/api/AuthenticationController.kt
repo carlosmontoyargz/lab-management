@@ -24,7 +24,7 @@
 package mx.buap.cs.labmngmnt.api
 
 import mx.buap.cs.labmngmnt.api.dto.AutenticacionRequest
-import mx.buap.cs.labmngmnt.api.dto.UsuarioDto
+import mx.buap.cs.labmngmnt.api.dto.TokenDto
 import mx.buap.cs.labmngmnt.security.JwtTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -55,7 +55,7 @@ class AuthenticationController
     @PostMapping("/autenticar")
     @Throws(AuthenticationException::class)
     fun autenticar(@RequestBody request: AutenticacionRequest):
-            ResponseEntity<UsuarioDto>
+            ResponseEntity<TokenDto>
     {
         val authentication = authManager.authenticate(
             UsernamePasswordAuthenticationToken(
@@ -65,7 +65,7 @@ class AuthenticationController
             .ok(crearUsuarioDto(authentication))
     }
 
-    private fun crearUsuarioDto(auth: Authentication) = UsuarioDto()
+    private fun crearUsuarioDto(auth: Authentication) = TokenDto()
         .apply {
             token = jwtTokenUtil.generateToken(auth.principal as UserDetails)
             roles = auth

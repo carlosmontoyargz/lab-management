@@ -24,16 +24,16 @@
 
 package mx.buap.cs.labmngmnt.api.dto
 
-open class UsuarioDto
+open class TokenDto
 {
-    var id: Int? = null
-    var correo: String? = null
-    var matricula: String? = null
-    var nombre: String? = null
-    var apellidoPaterno: String? = null
-    var apellidoMaterno: String? = null
-    var telefono: String? = null
-    var creado: String? = null
+//    var id: Int? = null
+//    var correo: String? = null
+//    var matricula: String? = null
+//    var nombre: String? = null
+//    var apellidoPaterno: String? = null
+//    var apellidoMaterno: String? = null
+//    var telefono: String? = null
+//    var creado: String? = null
     var token: String? = null
     var roles: Array<String> = arrayOf()
 
