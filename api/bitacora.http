@@ -123,6 +123,7 @@ Content-Type: application/json
 ###
 
 GET localhost:8080/api
+Authorization: Bearer {{auth_token}}
 
 > {%
 client.global.set("laboratorios_endpoint", response.body._links.laboratorios.href);
@@ -134,7 +135,9 @@ client.global.set("laboratorios_endpoint", lab_end);
 ###
 
 GET {{laboratorios_endpoint}}
+Authorization: Bearer {{auth_token}}
 
 ###
 
 GET localhost:8080/api/laboratorios
+Authorization: Bearer {{auth_token}}

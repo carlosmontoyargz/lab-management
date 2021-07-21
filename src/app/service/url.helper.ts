@@ -21,32 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map, mergeMap} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
-import { Observable } from 'rxjs';
-import {UrlHelper} from './url.helper';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class LaboratorioService {
-  constructor(private http: HttpClient) { }
-
-  obtenerUrlLaboratorios(): Observable<string> {
-    return this.http.get(environment.apiUrl)
-      .pipe(
-        map<any, string>(res =>
-          UrlHelper.limpiarUrl(res._links.laboratorios.href)));
-  }
-
-  getLaboratorio(): Observable<any> {
-    return this.obtenerUrlLaboratorios()
-      .pipe(
-        mergeMap((url: string) =>
-          this.http.get(url)),
-        map<any, any>(labs =>
-          labs._embedded.laboratorios[0]));
+export class UrlHelper {
+  static limpiarUrl(url: string): string {
+    return url.substring(0, url.search('{'));
   }
 }
