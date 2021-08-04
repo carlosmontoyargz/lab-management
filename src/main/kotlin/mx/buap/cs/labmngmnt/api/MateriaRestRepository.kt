@@ -25,12 +25,12 @@
 package mx.buap.cs.labmngmnt.api
 
 import mx.buap.cs.labmngmnt.model.Materia
-import mx.buap.cs.labmngmnt.model.views.MateriaView
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import java.util.*
 
 @RepositoryRestResource
 interface MateriaRestRepository : CrudRepository<Materia, Int>
 {
-    fun findByClave(clave: String): MateriaView?
+    fun findByClave(clave: String): Optional<Materia> //MateriaView?
 }

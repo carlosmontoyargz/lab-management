@@ -32,21 +32,20 @@ import {UrlHelper} from './url.helper';
   providedIn: 'root'
 })
 export class LaboratorioService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  obtenerUrlLaboratorios(): Observable<string> {
+  urlLaboratorios(): Observable<string> {
     return this.http.get(environment.apiUrl)
       .pipe(
-        map<any, string>(res =>
-          UrlHelper.limpiarUrl(res._links.laboratorios.href)));
+        map<any, string>(response =>
+          UrlHelper.trim(
+            response._links.laboratorios.href)));
   }
 
   getLaboratorio(): Observable<any> {
-    return this.obtenerUrlLaboratorios()
+    return this.urlLaboratorios()
       .pipe(
-        mergeMap((url: string) =>
-          this.http.get(url)),
-        map<any, any>(labs =>
-          labs._embedded.laboratorios[0]));
+        mergeMap((url: string) => this.http.get(url)),
+        map<any, any>(labs => labs._embedded.laboratorios[0]));
   }
 }

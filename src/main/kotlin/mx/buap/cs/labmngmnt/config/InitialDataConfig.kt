@@ -40,6 +40,8 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.util.*
+import kotlin.jvm.Throws
 
 @Configuration
 class InitialDataConfig
@@ -58,45 +60,33 @@ class InitialDataConfig
     @Bean
     fun cargaInicialDatos() = CommandLineRunner {
         log.info("Comenzando carga inicial de datos")
-
+        val laboratorio = laboratorio()
         val colaborador = colaborador()
         val profesor = profesor()
-        val documento = documento(colaborador)
-        val laboratorio = laboratorio()
-        val equipo = equipo(laboratorio)
-        val materia = materia()
-
-        val entradaBitacora = bitacoraRestRepository.save(
-            EntradaBitacora().apply {
-                fecha = LocalDate.now()
-                horaEntrada = LocalTime.now()
-                horaSalida = LocalTime.now()
-                this.colaborador = colaborador as Colaborador?
-            })
-
-        val incidente = incidenteRepository.save(
-            Incidente().apply {
-                id = IncidenteId().apply {
-                    entradaId = entradaBitacora.id
-                    numeroIncidente = 1
-                }
-                descripcion = "Incidente de prueba"
-            })
+        guardarMaterias()
+        guardarDocumentos(colaborador)
+        guardarEquipos(laboratorio)
+        guardarEntradas(colaborador)
     }
 
-    private fun materia() = materiaRepository.save(Materia().apply {
-        clave = "ICC002"
-        nombre = "Bases de Datos"
-    })
-
-    private fun equipo(laboratorio: Laboratorio) = equipoRepository
-        .save(Equipo().apply {
-            serial = "23CC-VRR"
-            marca = "Lenovo"
-            descripcion = "Equipo 10"
-            numeroInventario = 10
-            this.laboratorio = laboratorio
+    private fun laboratorio() =
+        laboratorioRepository.save(Laboratorio().apply {
+            nombre = "Laboratorio de Bases de Datos de la FCC"
+            edificio = "CC02"
+            salon = "003"
         })
+
+    private fun guardarMaterias() {
+        materiaRepository.save(Materia().apply {
+            clave = "ICC002"; nombre = "Bases de Datos"
+        })
+        materiaRepository.save(Materia().apply {
+            clave = "ICC003"; nombre = "Mineria de Datos"
+        })
+        materiaRepository.save(Materia().apply {
+            clave = "ICC004"; nombre = "Procesamiento de la Informacion"
+        })
+    }
 
     private fun profesor(): Usuario = usuarioRepository
         .save(usuarioService.preregistrar(
@@ -135,21 +125,59 @@ class InitialDataConfig
         })
     )
 
-    private fun documento(colaborador: Usuario): Documento {
-        val path = Paths.get("api/files/documento.docx")
-        return documentoService.guardar(
-            Documento().apply {
-                nombre = path.fileName.toString()
-                fechaCreacion = LocalDateTime.now()
-                this.colaborador = colaborador as Colaborador?
-            },
-            Files.readAllBytes(path))
+    private fun guardarDocumentos(colaborador: Usuario) {
+        val bytes = Files.readAllBytes(Paths.get("api/files/documento.docx"))
+        for (i in 1..10) {
+            documentoService.guardar(
+                Documento().apply {
+                    nombre = "documento" //path.fileName.toString()
+                    fechaCreacion = LocalDateTime.now()
+                    this.colaborador = colaborador as Colaborador?
+                },
+                bytes)
+        }
     }
 
-    private fun laboratorio() =
-        laboratorioRepository.save(Laboratorio().apply {
-            nombre = "Laboratorio de Bases de Datos de la FCC"
-            edificio = "CC02"
-            salon = "003"
-        })
+    private fun guardarEquipos(laboratorio: Laboratorio) {
+        val marcas = arrayOf("Lenovo", "Samsung", "Apple")
+        for (i in 1..50) {
+            equipoRepository.save(Equipo().apply {
+                serial = "${i * 100 + 12345}CC-VRR"
+                marca = marcas[i % 3]
+                descripcion = "Equipo $i"
+                numeroInventario = i
+                this.laboratorio = laboratorio
+            })
+        }
+    }
+
+    private fun guardarEntradas(colaborador: Usuario) {
+        val materias = arrayOf(
+            materiaRepository.findByClave("ICC002").orElse(null),
+            materiaRepository.findByClave("ICC003").orElse(null),
+            materiaRepository.findByClave("ICC004").orElse(null))
+
+        for (i in 0..60) {
+            val entradaBitacora = bitacoraRestRepository.save(
+                EntradaBitacora().apply {
+                    fecha = LocalDate.now().minusDays(i.toLong())
+                    horaEntrada = LocalTime.of(i % 8 + 7, 0)
+                    horaSalida = horaEntrada.plusHours(2)
+                    materia = materias[i % 3]
+                    this.colaborador = colaborador as Colaborador?
+                })
+
+            val numInicidentes = i % 4
+            for (j in 0..numInicidentes) {
+                incidenteRepository.save(
+                    Incidente().apply {
+                        id = IncidenteId().apply {
+                            entradaId = entradaBitacora.id
+                            numeroIncidente = j
+                        }
+                        descripcion = "Incidente de prueba #$j"
+                    })
+            }
+        }
+    }
 }

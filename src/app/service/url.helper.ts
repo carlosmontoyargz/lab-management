@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 export class UrlHelper {
-  static limpiarUrl(url: string): string {
+  static trim(url: string): string {
     return url.substring(0, url.search('{'));
   }
 }
