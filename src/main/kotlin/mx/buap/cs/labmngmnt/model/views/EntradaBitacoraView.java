@@ -37,20 +37,20 @@ import java.time.LocalTime;
 @Projection(name = "entradaBitacoraView", types = EntradaBitacora.class)
 public interface EntradaBitacoraView
 {
-    int getId();
+    Integer getId();
     LocalDate getFecha();
     LocalTime getHoraEntrada();
     LocalTime getHoraSalida();
 
-    @Value("#{target.materia != null ? target.materia.nombre : ''}")
+    @Value("#{target.materia != null? target.materia.nombre: ''}")
     String getMateria();
 
-    @Value("#{target.profesor != null ? target.profesor.getNombreCompleto() : ''}")
+    @Value("#{target.profesor != null? target.profesor.getNombreCompleto(): ''}")
     String getProfesor();
 
-    @Value("#{target.colaborador != null ? target.colaborador.getNombreCompleto() : ''}")
+    @Value("#{target.colaborador != null? target.colaborador.getNombreCompleto(): ''}")
     String getColaborador();
 
-    @Value("#{target.incidentes != null ? target.incidentes.size(): 0}")
+    @Value("#{target.incidentes != null? target.incidentes.size(): 0}")
     Integer getNumIncidentes();
 }
