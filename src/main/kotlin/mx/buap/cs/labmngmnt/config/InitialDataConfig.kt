@@ -60,55 +60,53 @@ class InitialDataConfig
 
     @Bean
     fun cargaInicialDatos() = CommandLineRunner {
-        log.info("Comienza carga inicial de datos")
-        val laboratorio = laboratorio()
-        val colaborador = colaborador()
-        val profesor = profesor()
-        guardarMaterias()
+        log.info("Comienza carga de datos de prueba")
+        val laboratorio = guardarlaboratorio()
+        val colaborador = guardarColaborador()
+        val profesor = guardarProfesor()
+        val materias = guardarMaterias()
         guardarDocumentos(colaborador)
         guardarEquipos(laboratorio)
-        guardarEntradas(colaborador)
+        guardarEntradas(
+            arrayListOf<Materia>().apply { materias.forEach { m -> add(m) } },
+            colaborador, profesor)
         guardarSolicitudes()
         guardarMensajes(profesor)
-        log.info("Finaliza carga inicial de datos")
+        log.info("Finaliza carga de datos de prueba")
     }
 
-    private fun laboratorio() =
+    private fun guardarlaboratorio() =
         laboratorioRepository.save(Laboratorio().apply {
             nombre = "Laboratorio de Bases de Datos de la FCC"
             edificio = "CC02"
             salon = "003"
         })
 
-    private fun guardarMaterias() {
-        materiaRepository.save(Materia().apply {
-            clave = "ICC002"; nombre = "Bases de Datos"
-        })
-        materiaRepository.save(Materia().apply {
-            clave = "ICC003"; nombre = "Mineria de Datos"
-        })
-        materiaRepository.save(Materia().apply {
-            clave = "ICC004"; nombre = "Procesamiento de la Informacion"
-        })
-    }
+    private fun guardarMaterias() = materiaRepository.saveAll(listOf(
+        materiaFrom("ICC002", "Bases de Datos"),
+        materiaFrom("ICC003", "Mineria de Datos"),
+        materiaFrom("ICC004", "Procesamiento de la Informacion")
+    ))
 
-    private fun profesor(): Usuario = usuarioRepository
-        .save(usuarioService.preregistrar(
-            Profesor().apply {
-                nombre = "Carlos"
-                apellidoPaterno = "Montoya"
-                apellidoMaterno = "Rodriguez"
-                matricula = "201325916"
-                correo = "carlos.montoya@profesor.buap.mx"
-                password = "admin"
-                creado = LocalDateTime.now()
-                telefono = "2125295121"
-                isActivo = true
-                isResponsable = true
-            })
-    )
+    private fun materiaFrom(clave1: String, nombre1: String) =
+        Materia().apply { clave = clave1; nombre = nombre1 }
 
-    private fun colaborador(): Usuario = usuarioRepository.save(
+    private fun guardarProfesor() = usuarioRepository.save(
+        usuarioService.preregistrar(Profesor().apply {
+            nombre = "Carlos"
+            apellidoPaterno = "Montoya"
+            apellidoMaterno = "Rodriguez"
+            matricula = "201325916"
+            correo = "carlos.montoya@profesor.buap.mx"
+            password = "admin"
+            creado = LocalDateTime.now()
+            telefono = "2125295121"
+            isActivo = true
+            isResponsable = true
+        })
+    ) as Profesor
+
+    private fun guardarColaborador() = usuarioRepository.save(
         usuarioService.preregistrar(Colaborador().apply {
             nombre = "Juan"
             apellidoPaterno = "Lopez"
@@ -127,18 +125,17 @@ class InitialDataConfig
                 incrementar(Duration.ofHours(0).plusMinutes(0))
             }
         })
-    )
+    ) as Colaborador
 
     private fun guardarDocumentos(colaborador: Usuario) {
-        val bytes = Files.readAllBytes(Paths.get("api/files/documento.docx"))
         for (i in 1..10) {
             documentoService.guardar(
                 Documento().apply {
-                    nombre = "documento" //path.fileName.toString()
-                    fechaCreacion = LocalDateTime.now()
+                    nombre = "documento_$i.docx" //path.fileName.toString()
+                    fechaCreacion = LocalDateTime.now().minusDays(i.toLong())
                     this.colaborador = colaborador as Colaborador?
                 },
-                bytes)
+                Files.readAllBytes(Paths.get("api/files/documento.docx")))
         }
     }
 
@@ -155,22 +152,22 @@ class InitialDataConfig
         }
     }
 
-    private fun guardarEntradas(colaborador: Usuario) {
-        val materias = arrayOf(
-            materiaRepository.findByClave("ICC002").orElse(null),
-            materiaRepository.findByClave("ICC003").orElse(null),
-            materiaRepository.findByClave("ICC004").orElse(null))
-
-        for (i in 0..60) {
+    private fun guardarEntradas(materias: ArrayList<Materia>,
+                                colaboradorP: Colaborador,
+                                profesorP: Profesor) {
+        for (i in 1..60) {
             val entradaBitacora = bitacoraRestRepository.save(
                 EntradaBitacora().apply {
                     fecha = LocalDate.now().minusDays(i.toLong())
                     horaEntrada = LocalTime.of(i % 8 + 7, 0)
                     horaSalida = horaEntrada.plusHours(2)
-                    materia = materias[i % 3]
-                    this.colaborador = colaborador as Colaborador?
-                })
-
+                    colaborador = colaboradorP
+                    if (i % 5 != 1) {
+                        materia = materias[i % 3]
+                        profesor = profesorP
+                    }
+                }
+            )
             val numInicidentes = i % 4
             if (numInicidentes == 0) continue
 

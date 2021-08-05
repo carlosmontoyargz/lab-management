@@ -42,15 +42,15 @@ public interface EntradaBitacoraView
     LocalTime getHoraEntrada();
     LocalTime getHoraSalida();
 
-    @Value("#{target.materia != null? target.materia.nombre: ''}")
+    @Value("#{target.materia == null? null: target.materia.nombre}")
     String getMateria();
 
-    @Value("#{target.profesor != null? target.profesor.getNombreCompleto(): ''}")
+    @Value("#{target.profesor == null? null: target.profesor.getNombreCompleto()}")
     String getProfesor();
 
-    @Value("#{target.colaborador != null? target.colaborador.getNombreCompleto(): ''}")
+    @Value("#{target.colaborador == null? null: target.colaborador.getNombreCompleto()}")
     String getColaborador();
 
-    @Value("#{target.incidentes != null? target.incidentes.size(): 0}")
+    @Value("#{target.incidentes == null? 0: target.incidentes.size()}")
     Integer getNumIncidentes();
 }
