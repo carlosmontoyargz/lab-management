@@ -34,14 +34,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.math.BigDecimal
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.util.*
-import kotlin.jvm.Throws
 
 @Configuration
 class InitialDataConfig
@@ -53,13 +52,15 @@ class InitialDataConfig
         val equipoRepository: EquipoRestRepository,
         val materiaRepository: MateriaRestRepository,
         val bitacoraRestRepository: BitacoraRestRepository,
-        val incidenteRepository: IncidenteRestRepository)
+        val incidenteRepository: IncidenteRestRepository,
+        val solicitudesRepository: SolicitudesRestRepository,
+        val mensajeRepository: MensajeRepository)
 {
     private val log = LogManager.getLogger(InitialDataConfig::class.java)
 
     @Bean
     fun cargaInicialDatos() = CommandLineRunner {
-        log.info("Comenzando carga inicial de datos")
+        log.info("Comienza carga inicial de datos")
         val laboratorio = laboratorio()
         val colaborador = colaborador()
         val profesor = profesor()
@@ -67,6 +68,9 @@ class InitialDataConfig
         guardarDocumentos(colaborador)
         guardarEquipos(laboratorio)
         guardarEntradas(colaborador)
+        guardarSolicitudes()
+        guardarMensajes(profesor)
+        log.info("Finaliza carga inicial de datos")
     }
 
     private fun laboratorio() =
@@ -178,6 +182,29 @@ class InitialDataConfig
                         descripcion = "Incidente de prueba #$j"
                     })
             }
+        }
+    }
+
+    private fun guardarSolicitudes() {
+        for (i in 1..60) {
+            solicitudesRepository.save(Solicitud().apply {
+                folio = "00000$i"
+                descripcion = "Solicitud de prueba #$i"
+                costo = BigDecimal.valueOf(i.toLong()) * BigDecimal.valueOf(10.01)
+                estado = EstadoSolicitud.values()[i % 5]
+                tipo = TipoSolicitud.values()[i % 5]
+            })
+        }
+    }
+
+    private fun guardarMensajes(usuario: Usuario) {
+        for (i in 1..60) {
+            mensajeRepository.save(Mensaje().apply {
+                titulo = "Mensaje de prueba #$i"
+                contenido = "Este es un mensaje de prueba."
+                enviado = LocalDateTime.now().minusDays(i.toLong())
+                enviadoPor = usuario
+            })
         }
     }
 }

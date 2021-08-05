@@ -55,7 +55,7 @@ public class Mensaje
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enviado_por")
-    private Usuario usuario;
+    private Usuario enviadoPor;
 
     public UUID getId() {
         return id;
@@ -89,11 +89,11 @@ public class Mensaje
         this.enviado = enviado;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Usuario getEnviadoPor() {
+        return enviadoPor;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setEnviadoPor(Usuario usuario) {
+        this.enviadoPor = usuario;
     }
 }

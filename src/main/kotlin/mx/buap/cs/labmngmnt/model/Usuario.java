@@ -31,6 +31,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author Carlos Montoya
@@ -84,6 +85,12 @@ public class Usuario
         Usuario usuario = (Usuario) o;
 
         return id == usuario.id;
+    }
+
+    public String getNombreCompleto() {
+        return this.nombre + " " +
+                Objects.requireNonNullElse(this.apellidoPaterno, "") + " " +
+                Objects.requireNonNullElse(this.apellidoMaterno, "");
     }
 
     @Override
