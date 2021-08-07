@@ -41,6 +41,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 /**
  *
@@ -69,6 +72,16 @@ class WebSecurityConfig
     fun securityEvaluationContextExtension(): SecurityEvaluationContextExtension? =
         SecurityEvaluationContextExtension()
 
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource =
+        UrlBasedCorsConfigurationSource().apply {
+            registerCorsConfiguration(
+                "/**",
+                CorsConfiguration().apply {
+                    allowedOrigins = arrayListOf("*")
+                })
+        }
+
     /**
      * Configura AuthenticationManager con el componente de detalles de
      * usuario y el codificador de contraseñas BCrypt
@@ -84,8 +97,10 @@ class WebSecurityConfig
 
     override fun configure(httpSecurity: HttpSecurity?) {
         httpSecurity!!
+            .cors()
+            .and()
             .csrf().disable()
-            .antMatcher("/api/**")
+//            .antMatcher("/api/**")
 //            .authorizeRequests()
 //            .anyRequest().authenticated()
 //            .and()
@@ -98,7 +113,5 @@ class WebSecurityConfig
 //            .and()
 //            .sessionManagement() // stateless session
 //            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            .and()
-            .cors()
     }
 }
