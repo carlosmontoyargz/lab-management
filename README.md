@@ -3,7 +3,7 @@
 ### Running the server
 `mvnw spring-boot:run`
 
-Sample file witj API calls at `api/`
+Sample file with API calls at `api/`
 
 ### Reference Documentation
 For further reference, please consider the following sections:

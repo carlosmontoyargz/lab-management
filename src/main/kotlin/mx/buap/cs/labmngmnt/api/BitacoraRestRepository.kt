@@ -31,8 +31,10 @@ import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(path = "entradas", collectionResourceRel = "entradas")
-interface BitacoraRestRepository: PagingAndSortingRepository<EntradaBitacora, Int>
+@RepositoryRestResource(
+    path = "entradas", collectionResourceRel = "entradas")
+interface BitacoraRestRepository
+    : PagingAndSortingRepository<EntradaBitacora, Int>
 {
     @Query("""
         select e from EntradaBitacora e
