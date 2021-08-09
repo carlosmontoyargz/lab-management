@@ -25,8 +25,30 @@
 package mx.buap.cs.labmngmnt.api
 
 import mx.buap.cs.labmngmnt.model.EntradaBitacora
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.data.repository.query.Param
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @RepositoryRestResource(path = "entradas", collectionResourceRel = "entradas")
-interface BitacoraRestRepository : PagingAndSortingRepository<EntradaBitacora, Int>
+interface BitacoraRestRepository: PagingAndSortingRepository<EntradaBitacora, Int>
+{
+    @Query("""
+        select e from EntradaBitacora e
+        where
+            lower(e.materia.nombre) like lower(concat('%', :q, '%'))
+            or lower(concat(
+                e.colaborador.nombre,
+                e.colaborador.apellidoPaterno,
+                e.colaborador.apellidoMaterno
+            )) like lower(concat('%', :q, '%'))
+            or lower(concat(
+                e.profesor.nombre,
+                e.profesor.apellidoPaterno,
+                e.profesor.apellidoMaterno
+            )) like lower(concat('%', :q, '%'))
+    """)
+    fun searchBy(@Param("q") q: String, pageable: Pageable)
+    : List<EntradaBitacora>
+}
