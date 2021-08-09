@@ -1,27 +1,34 @@
 # LabManagement
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
+### Running the server
+`mvnw spring-boot:run`
 
-## Development server
+Sample file witj API calls at `api/`
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Reference Documentation
+For further reference, please consider the following sections:
 
-## Code scaffolding
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.5.3/maven-plugin/reference/html/)
+* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.5.3/maven-plugin/reference/html/#build-image)
+* [Spring Web](https://docs.spring.io/spring-boot/docs/2.5.3/reference/htmlsingle/#boot-features-developing-web-applications)
+* [Rest Repositories](https://docs.spring.io/spring-boot/docs/2.5.3/reference/htmlsingle/#howto-use-exposing-spring-data-repositories-rest-endpoint)
+* [Spring Security](https://docs.spring.io/spring-boot/docs/2.5.3/reference/htmlsingle/#boot-features-security)
+* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.5.3/reference/htmlsingle/#boot-features-jpa-and-spring-data)
+* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/2.5.3/reference/htmlsingle/#production-ready)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Guides
+The following guides illustrate how to use some features concretely:
 
-## Build
+* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
+* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
+* [Accessing JPA Data with REST](https://spring.io/guides/gs/accessing-data-rest/)
+* [Accessing Neo4j Data with REST](https://spring.io/guides/gs/accessing-neo4j-data-rest/)
+* [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
+* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
+* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
+* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
+* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+* [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
