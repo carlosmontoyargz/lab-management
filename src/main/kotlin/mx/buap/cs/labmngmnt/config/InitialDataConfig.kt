@@ -62,14 +62,12 @@ class InitialDataConfig
     fun cargaInicialDatos() = CommandLineRunner {
         log.info("Comienza carga de datos de prueba")
         val laboratorio = guardarlaboratorio()
-        val colaborador = guardarColaborador()
+        val colaboradores = guardarColaboradores()
         val profesor = guardarProfesor()
         val materias = guardarMaterias()
-        guardarDocumentos(colaborador)
+        guardarDocumentos(colaboradores)
         guardarEquipos(laboratorio)
-        guardarEntradas(
-            arrayListOf<Materia>().apply { materias.forEach { m -> add(m) } },
-            colaborador, profesor)
+        guardarEntradas(toList(materias), colaboradores, profesor)
         guardarSolicitudes()
         guardarMensajes(profesor)
         log.info("Finaliza carga de datos de prueba")
@@ -106,34 +104,46 @@ class InitialDataConfig
         })
     ) as Profesor
 
-    private fun guardarColaborador() = usuarioRepository.save(
-        usuarioService.preregistrar(Colaborador().apply {
+    private fun guardarColaboradores() = usuarioRepository.saveAll(listOf(
+        preregistrar(Colaborador().apply {
             nombre = "Juan"
             apellidoPaterno = "Lopez"
             apellidoMaterno = "Gomez"
             matricula = "201456145"
             correo = "juan.lopez@alumno.buap.mx"
-            password = "user"
-            creado = LocalDateTime.now()
+            password = "juan.lopez"
             telefono = "3324697114"
             isActivo = true
             isResponsable = true
             carrera = "ICC"
             inicioServicio = LocalDate.now().minusMonths(4)
             conclusionServicio = LocalDate.now()
-            tiempoPrestado = TiempoPrestado().apply {
-                incrementar(Duration.ofHours(0).plusMinutes(0))
-            }
-        })
-    ) as Colaborador
+        }),
+        preregistrar(Colaborador().apply {
+            nombre = "Diego"
+            apellidoPaterno = "Ruiz"
+            apellidoMaterno = "Gonzalez"
+            matricula = "201566341"
+            correo = "diego.ruiz@alumno.buap.mx"
+            password = "diego.ruiz"
+            telefono = "5524697114"
+            isActivo = true
+            isResponsable = false
+            carrera = "ITI"
+            inicioServicio = LocalDate.now().minusMonths(4)
+            conclusionServicio = null
+        }),
+    ))
 
-    private fun guardarDocumentos(colaborador: Usuario) {
+    private fun preregistrar(usuario: Usuario) = usuarioService.preregistrar(usuario)
+
+    private fun guardarDocumentos(colaboradores: List<Usuario>) {
         for (i in 1..10) {
             documentoService.guardar(
                 Documento().apply {
                     nombre = "documento_$i.docx" //path.fileName.toString()
                     fechaCreacion = LocalDateTime.now().minusDays(i.toLong())
-                    this.colaborador = colaborador as Colaborador?
+                    this.colaborador = colaboradores[i % colaboradores.size] as Colaborador?
                 },
                 Files.readAllBytes(Paths.get("api/files/documento.docx")))
         }
@@ -152,8 +162,8 @@ class InitialDataConfig
         }
     }
 
-    private fun guardarEntradas(materias: ArrayList<Materia>,
-                                colaboradorP: Colaborador,
+    private fun guardarEntradas(materias: List<Materia>,
+                                colaboradores: List<Usuario>,
                                 profesorP: Profesor) {
         for (i in 1..60) {
             val entradaBitacora = bitacoraRestRepository.save(
@@ -161,9 +171,9 @@ class InitialDataConfig
                     fecha = LocalDate.now().minusDays(i.toLong())
                     horaEntrada = LocalTime.of(i % 8 + 7, 0)
                     horaSalida = horaEntrada.plusHours(2)
-                    colaborador = colaboradorP
+                    colaborador = colaboradores[i % colaboradores.size] as Colaborador
                     if (i % 5 != 1) {
-                        materia = materias[i % 3]
+                        materia = materias[i % materias.size]
                         profesor = profesorP
                     }
                 }
@@ -206,4 +216,7 @@ class InitialDataConfig
             })
         }
     }
+
+    fun <T: Any> toList(itr: Iterable<T>): List<T> =
+        arrayListOf<T>().apply { itr.forEach(this::add) }
 }

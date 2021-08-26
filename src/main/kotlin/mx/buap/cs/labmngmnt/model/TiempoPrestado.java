@@ -47,7 +47,6 @@ public class TiempoPrestado
 
     public void incrementar(Duration tiempo) {
         setFromDuration(toDuration().plus(tiempo));
-
     }
 
     public void reducir(Duration tiempo) {

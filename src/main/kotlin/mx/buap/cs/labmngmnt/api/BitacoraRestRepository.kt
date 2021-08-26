@@ -31,26 +31,28 @@ import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(
-    path = "entradas", collectionResourceRel = "entradas")
-interface BitacoraRestRepository
-    : PagingAndSortingRepository<EntradaBitacora, Int>
+@RepositoryRestResource(path = "entradas", collectionResourceRel = "entradas")
+interface BitacoraRestRepository : PagingAndSortingRepository<EntradaBitacora, Int>
 {
     @Query("""
         select e from EntradaBitacora e
         where
-            lower(e.materia.nombre) like lower(concat('%', :q, '%'))
+            (e.materia is not null
+                and lower(coalesce(e.materia.nombre, ''))
+                    like lower(concat('%', :q, '%'))
+            )
+            or (e.profesor is not null
+                and lower(concat(
+                    coalesce(e.profesor.nombre, ''),
+                    coalesce(e.profesor.apellidoPaterno, ''),
+                    coalesce(e.profesor.apellidoMaterno, '')
+                )) like lower(concat('%', :q, '%'))
+            )
             or lower(concat(
-                e.colaborador.nombre,
-                e.colaborador.apellidoPaterno,
-                e.colaborador.apellidoMaterno
-            )) like lower(concat('%', :q, '%'))
-            or lower(concat(
-                e.profesor.nombre,
-                e.profesor.apellidoPaterno,
-                e.profesor.apellidoMaterno
+                coalesce(e.colaborador.nombre, ''),
+                coalesce(e.colaborador.apellidoPaterno, ''),
+                coalesce(e.colaborador.apellidoMaterno, '')
             )) like lower(concat('%', :q, '%'))
     """)
-    fun searchBy(@Param("q") q: String, pageable: Pageable)
-    : List<EntradaBitacora>
+    fun searchBy(@Param("q") q: String, pageable: Pageable): List<EntradaBitacora>
 }
