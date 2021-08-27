@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package mx.buap.cs.labmngmnt.api
 
 import mx.buap.cs.labmngmnt.model.EntradaBitacora
@@ -32,27 +31,23 @@ import org.springframework.data.repository.query.Param
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @RepositoryRestResource(path = "entradas", collectionResourceRel = "entradas")
-interface BitacoraRestRepository : PagingAndSortingRepository<EntradaBitacora, Int>
+interface BitacoraRestRepository: PagingAndSortingRepository<EntradaBitacora, Int>
 {
     @Query("""
-        select e from EntradaBitacora e
-        where
-            (e.materia is not null
-                and lower(coalesce(e.materia.nombre, ''))
-                    like lower(concat('%', :q, '%'))
-            )
-            or (e.profesor is not null
-                and lower(concat(
-                    coalesce(e.profesor.nombre, ''),
-                    coalesce(e.profesor.apellidoPaterno, ''),
-                    coalesce(e.profesor.apellidoMaterno, '')
-                )) like lower(concat('%', :q, '%'))
-            )
-            or lower(concat(
-                coalesce(e.colaborador.nombre, ''),
-                coalesce(e.colaborador.apellidoPaterno, ''),
-                coalesce(e.colaborador.apellidoMaterno, '')
-            )) like lower(concat('%', :q, '%'))
+        SELECT e
+        FROM
+            EntradaBitacora e
+            JOIN e.colaborador c LEFT JOIN e.profesor p LEFT JOIN e.materia m
+        WHERE
+            lower(coalesce(m.nombre, '')) LIKE concat('%', lower(:q), '%')
+            OR lower(concat(
+                coalesce(p.nombre, ''),
+                coalesce(p.apellidoPaterno, ''),
+                coalesce(p.apellidoMaterno, ''))) LIKE concat('%', lower(:q), '%')
+            OR lower(concat(
+                coalesce(c.nombre, ''),
+                coalesce(c.apellidoPaterno, ''),
+                coalesce(c.apellidoMaterno, ''))) LIKE concat('%', lower(:q), '%')
     """)
     fun searchBy(@Param("q") q: String, pageable: Pageable): List<EntradaBitacora>
 }

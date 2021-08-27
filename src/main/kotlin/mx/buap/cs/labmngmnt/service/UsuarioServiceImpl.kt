@@ -44,6 +44,12 @@ class UsuarioServiceImpl
         val passEncoder: PasswordEncoder)
     : UsuarioService
 {
+    /**
+     * Verifica que el usuario no este registrado, y codifica la
+     * contraseña para ser guardada encriptada en la base de datos.
+     *
+     * @param usuario El usuario a intentar registrar en el sistema
+     */
     @Throws(SignUpException::class)
     override fun preregistrar(usuario: Usuario): Usuario {
         if (usuarioRepository.existsByCorreo(usuario.correo!!))

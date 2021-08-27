@@ -180,7 +180,6 @@ class InitialDataConfig
             )
             val numInicidentes = i % 4
             if (numInicidentes == 0) continue
-
             for (j in 0..numInicidentes) {
                 incidenteRepository.save(
                     Incidente().apply {
