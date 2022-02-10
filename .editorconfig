@@ -3,23 +3,12 @@ root = true
 
 [*]
 charset = utf-8
-indent_style = space
+end_of_line = lf
 indent_size = 2
+indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
-
-[{*.java, *.kt}]
-indent_size = 4
-ij_continuation_indent_size = 8
-
-[*.ts]
-indent_size = 2
-ij_continuation_indent_size = 2
-
-[{*.xml, *.html}]
-indent_size = 2
-indent_style = space
