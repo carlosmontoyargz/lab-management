@@ -55,6 +55,10 @@ export const routes: Routes = [
         loadChildren: () => import('./views/perfil/perfil.module').then(m => m.PerfilModule)
       },
       {
+        path: 'bitacora',
+        loadChildren: () => import('./views/bitacora/bitacora.module').then(m => m.BitacoraModule)
+      },
+      {
         path: 'base',
         loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)
       },

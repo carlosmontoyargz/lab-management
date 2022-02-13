@@ -21,7 +21,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Bitácora',
-    url: '/base/tables',
+    url: '/bitacora',
     icon: 'icon-notebook'
   },
   {

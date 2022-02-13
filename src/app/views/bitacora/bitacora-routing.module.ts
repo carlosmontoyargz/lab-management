@@ -21,32 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import {Component, ViewChild} from '@angular/core';
-import {ModalDirective} from 'ngx-bootstrap/modal';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import {BitacoraComponent} from './bitacora.component';
 
-@Component({
-  templateUrl: 'perfil.component.html'
+const routes: Routes = [
+  {
+    path: '',
+    component: BitacoraComponent,
+    data: {
+      title: 'Bitacora'
+    }
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class PerfilComponent {
-  @ViewChild('myModal')       public myModal:       ModalDirective;
-  @ViewChild('passwordModal') public passwordModal: ModalDirective;
-
-  constructor() { }
-
-  isCollapsed: boolean = false;
-  iconCollapse: string = 'icon-arrow-up';
-
-  collapsed(event: any): void {
-    // console.log(event);
-  }
-
-  expanded(event: any): void {
-    // console.log(event);
-  }
-
-  toggleCollapse(): void {
-    this.isCollapsed = !this.isCollapsed;
-    this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
-  }
-
-}
+export class BitacoraRoutingModule {}
