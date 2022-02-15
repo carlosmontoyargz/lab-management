@@ -26,7 +26,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Solicitudes',
-    url: '/charts',
+    url: '/solicitudes',
     icon: 'icon-pencil'
   },
   {
@@ -41,7 +41,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Foro',
-    url: '/icons/simple-line-icons',
+    url: '/foro',
     icon: 'icon-speech'
   },
   /*{

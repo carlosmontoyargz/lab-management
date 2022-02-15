@@ -47,7 +47,7 @@ export const routes: Routes = [
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Inicio'
     },
     children: [
       {
@@ -57,6 +57,22 @@ export const routes: Routes = [
       {
         path: 'bitacora',
         loadChildren: () => import('./views/bitacora/bitacora.module').then(m => m.BitacoraModule)
+      },
+      {
+        path: 'solicitudes',
+        loadChildren: () => import('./views/solicitudes/solicitudes.module').then(m => m.SolicitudesModule)
+      },
+      {
+        path: 'equipos',
+        loadChildren: () => import('./views/equipos/equipos.module').then(m => m.EquiposModule)
+      },
+      {
+        path: 'usuarios',
+        loadChildren: () => import('./views/usuarios/usuarios.module').then(m => m.UsuariosModule)
+      },
+      {
+        path: 'foro',
+        loadChildren: () => import('./views/foro/foro.module').then(m => m.ForoModule)
       },
       {
         path: 'base',
